@@ -11,7 +11,7 @@ public class Account { // This is a individual user account 'Class'.
     }
 
     public boolean Deposit(double amount) {
-        if (amount > 0) {
+        if (amount >= 0) {
             balance += amount;
             return true;
         }
@@ -19,7 +19,7 @@ public class Account { // This is a individual user account 'Class'.
     }
 
     public boolean Withdraw(double amount) {
-        if (amount > 0 && amount <= balance) {
+        if (amount >= 0 && amount <= balance) {
             balance -= amount;
             return true;
         }

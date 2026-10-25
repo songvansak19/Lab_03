@@ -1,9 +1,18 @@
 
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 public class Exercise5 {
-    public static void SignIn(ArrayList <Account> account) {
+
+    public static void SignIn(ArrayList<Account> accounts) {
+        Path path = Path.of("Users.json");
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
         clearScreen();
         Scanner input = new Scanner(System.in);
         System.out.print("Enter your name: ");
@@ -12,16 +21,21 @@ public class Exercise5 {
         int account_num = input.nextInt();
         System.out.print("Enter your Balance: ");
         double balance = input.nextDouble();
-        account.add(new Account(name, account_num, balance));
+        accounts.add(new Account(name, account_num, balance));
+
+        try {
+            Files.writeString(path, gson.toJson(accounts));
+        } catch (Exception e) {
+            System.out.println("Sorry, Error Occurred!");
+        }
+
         clearScreen();
         System.out.println("Please log in to your account!");
         System.out.println("=".repeat(30));
     }
 
-    public static Account LogIn(ArrayList <Account> accounts) {
+    public static Account LogIn(ArrayList<Account> accounts, AuthService authService) {
         clearScreen();
-
-        AuthService authService = new AuthService(accounts);
 
         Scanner input = new Scanner(System.in);
         System.out.print("Enter your name: ");
@@ -47,10 +61,13 @@ public class Exercise5 {
 
     public static void main(String[] args) {
 
-        ArrayList <Account> accounts = new ArrayList<>();
+        ArrayList<Account> accounts;
         Account current_acc;
 
-        while (true) { 
+        AuthService authService = new AuthService();
+        accounts = authService.loadAccounts();
+
+        while (true) {
             System.out.println("Enter an option below: ");
             System.out.println("1 - Sign in");
             System.out.println("2 - Log in");
@@ -59,16 +76,17 @@ public class Exercise5 {
             Scanner input = new Scanner(System.in);
             int option = input.nextInt();
             switch (option) {
-                case 1 -> SignIn(accounts);
+                case 1 ->
+                    SignIn(accounts);
                 case 2 -> {
-                    current_acc = LogIn(accounts);
+                    current_acc = LogIn(accounts, authService);
                     if (current_acc != null) {
                         input.nextLine();
                         clearScreen();
                         System.out.println("Welcome! " + current_acc.getName());
                         System.out.println("=".repeat(30));
                         boolean running = true;
-                        while (running) { 
+                        while (running) {
                             System.out.println("Enter an Option below: ");
                             System.out.println("1 - Check Balance");
                             System.out.println("2 - Withdraw Money");
@@ -86,17 +104,16 @@ public class Exercise5 {
                                 }
                                 case 2 -> {
                                     clearScreen();
-                                    while (true) { 
+                                    while (true) {
                                         System.out.println("=".repeat(30));
                                         System.out.println("Your Balance: " + current_acc.getBalance());
-                                        System.out.print("Enter Amount to Withdraw: ");
+                                        System.out.print("Enter Amount to Withdraw (Enter '0' to Exit): ");
                                         double amount = input.nextDouble();
                                         if (current_acc.Withdraw(amount)) {
                                             clearScreen();
                                             System.out.println("Withdraw Successful!!");
                                             break;
-                                        }
-                                        else {
+                                        } else {
                                             clearScreen();
                                             System.out.println("Invalid Amount!");
                                         }
@@ -109,18 +126,17 @@ public class Exercise5 {
                                     while (true) {
                                         System.out.println("=".repeat(30));
                                         System.out.println("Your Balance: " + current_acc.getBalance());
-                                        System.out.print("Enter Amount to Deposit: ");
+                                        System.out.print("Enter Amount to Deposit (Enter '0' to Exit): ");
                                         double amount = input.nextDouble();
                                         if (current_acc.Deposit(amount)) {
                                             clearScreen();
                                             System.out.println("Deposit Successful!!");
                                             System.out.println("=".repeat(30));
                                             break;
-                                        }
-                                        else {
+                                        } else {
                                             clearScreen();
                                             System.out.println("Invalid Amount!!");
-                                        } 
+                                        }
                                     }
                                 }
                                 case 4 -> {
