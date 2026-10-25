@@ -1,71 +1,16 @@
 
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Scanner;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
 public class Exercise5 {
-
-    public static void SignIn(ArrayList<Account> accounts) {
-        Path path = Path.of("Users.json");
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-        clearScreen();
-        Scanner input = new Scanner(System.in);
-        System.out.print("Enter your name: ");
-        String name = input.nextLine();
-        System.out.print("Enter your Account Number: ");
-        int account_num = input.nextInt();
-        System.out.print("Enter your Balance: ");
-        double balance = input.nextDouble();
-        accounts.add(new Account(name, account_num, balance));
-
-        try {
-            Files.writeString(path, gson.toJson(accounts));
-        } catch (Exception e) {
-            System.out.println("Sorry, Error Occurred!");
-        }
-
-        clearScreen();
-        System.out.println("Please log in to your account!");
-        System.out.println("=".repeat(30));
-    }
-
-    public static Account LogIn(ArrayList<Account> accounts, AuthService authService) {
-        clearScreen();
-
-        Scanner input = new Scanner(System.in);
-        System.out.print("Enter your name: ");
-        String name = input.nextLine();
-        System.out.print("Enter your Account Number: ");
-        int account_number = input.nextInt();
-
-        Account account = authService.Authenticate(name, account_number);
-
-        if (account == null) {
-            clearScreen();
-            System.out.println("Sorry! Invalid name or account number!");
-            System.out.println("=".repeat(30));
-        } else {
-            return account;
-        }
-        return null;
-    }
-
     public static void clearScreen() {
         System.out.println("\033[H\033[2J");
     }
 
     public static void main(String[] args) {
 
-        ArrayList<Account> accounts;
         Account current_acc;
 
         AuthService authService = new AuthService();
-        accounts = authService.loadAccounts();
 
         while (true) {
             System.out.println("Enter an option below: ");
@@ -77,9 +22,9 @@ public class Exercise5 {
             int option = input.nextInt();
             switch (option) {
                 case 1 ->
-                    SignIn(accounts);
+                    authService.SignIn();
                 case 2 -> {
-                    current_acc = LogIn(accounts, authService);
+                    current_acc = authService.LogIn();
                     if (current_acc != null) {
                         input.nextLine();
                         clearScreen();
