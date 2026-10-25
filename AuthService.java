@@ -65,33 +65,17 @@ public class AuthService {
         System.out.print("Enter your name: ");
         String name = input.nextLine();
         System.out.print("Enter your Account Number: ");
-        int account_number = input.nextInt();
+        int account_num = input.nextInt();
 
-        if (Authenticate(name, account_number) == null) {
-            clearScreen();
-            System.out.println("Sorry! Invalid name or account number!");
-            System.out.println("=".repeat(30));
-        } else {
-            return Authenticate(name, account_number);
-        }
-        return null;
-    }
-
-    public Account Authenticate(String name, int account_num) {
-        Path path = Path.of("Users.json");
-        String Users;
-
-        try {
-            Users = Files.readString(path);
-            System.out.println(Users);
-        } catch (Exception e) {
-            System.out.println("File not Found!");
-        }
         for (Account account : accounts) {
             if (account.getAccountNumber() == account_num && account.getName().equals(name)) {
                 return account;
             }
         }
+        
+        clearScreen();
+        System.out.println("Sorry! Invalid name or account number!");
+        System.out.println("=".repeat(30));
         return null;
     }
 }
