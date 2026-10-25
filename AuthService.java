@@ -28,7 +28,7 @@ public class AuthService {
                 Files.writeString(path, gson.toJson(accounts));
             }
         } catch (Exception e) {
-            System.out.println("Error occurred!!");
+            System.out.println("ERROR from AuthService.java: Error occurred!!");
         }
     }
 
@@ -50,7 +50,7 @@ public class AuthService {
         try {
             Files.writeString(path, gson.toJson(accounts));
         } catch (Exception e) {
-            System.out.println("Sorry, Error Occurred!");
+            System.out.println("ERROR from AuthService.java: Unable to 'write/update file");
         }
 
         clearScreen();
@@ -72,7 +72,7 @@ public class AuthService {
                 return account;
             }
         }
-        
+
         clearScreen();
         System.out.println("Sorry! Invalid name or account number!");
         System.out.println("=".repeat(30));
