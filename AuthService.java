@@ -27,7 +27,7 @@ public class AuthService {
                 arr = element.getAsJsonArray();
             }
         } catch (Exception e) {
-            System.out.println("Unable to Write File!");
+            System.out.println(e.getMessage() + " [Hint: AuthService.java]");
         }
     }
 
@@ -64,7 +64,7 @@ public class AuthService {
             arr.add(gson.toJsonTree(new Account(name, account_num, balance)));
             Files.writeString(path, gson.toJson(arr));
         } catch (Exception e) {
-            System.out.println("Unable to 'write/update' file");
+            System.out.println(e.getMessage() + " [Hint: AuthService.java]");
         }
 
         clearScreen();
@@ -100,7 +100,7 @@ public class AuthService {
     public void updateBalance() {
         for (JsonElement element : arr) {
             JsonObject obj = element.getAsJsonObject();
-            if (obj.get("name").getAsString().equals(current_acc.getName())) {
+            if (obj.get("account_num").getAsInt() == current_acc.getAccountNumber()) {
                 obj.addProperty("balance", current_acc.getBalance());
                 break;
             }
@@ -108,9 +108,8 @@ public class AuthService {
 
         try {
             Files.writeString(path, gson.toJson(arr));
-            arr = JsonParser.parseString(Files.readString(path)).getAsJsonArray();
         } catch (Exception e) {
-            System.out.println("Unable to write/update file path!");
+            System.out.println(e.getMessage() + " [Hint: AuthService.java]");
         }
     }
 }
