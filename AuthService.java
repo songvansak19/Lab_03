@@ -1,34 +1,33 @@
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
 import java.util.Scanner;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.Type;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 public class AuthService {
-    private ArrayList <Account> accounts = new ArrayList<>();
-
-    // ========================================================== //
-    Path path = Path.of("Users.json"); // Find Users.json file's path.
-    Gson gson = new GsonBuilder().setPrettyPrinting().create(); // Define the structure of Json.
-    Type type = new TypeToken<ArrayList<Account>>() {}.getType(); // Tells java the Target type (ArrayList<Account> is a Class)
-    // ========================================================== //
+    
+    private Account current_acc;
+    private Path path = Path.of("Users.json");
+    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private JsonArray arr = new JsonArray();
 
     public AuthService() {
         try {
             if (!Files.exists(path)) {
-                Files.writeString(path, gson.toJson(accounts));
+                Files.writeString(path, gson.toJson(arr));
             } else {
-                String json = Files.readString(path);
-                accounts = gson.fromJson(json, type);
-                Files.writeString(path, gson.toJson(accounts));
+                String reader = Files.readString(path);
+                JsonElement element = JsonParser.parseString(reader);
+                arr = element.getAsJsonArray();
             }
         } catch (Exception e) {
-            System.out.println("ERROR from AuthService.java: Error occurred!!");
+            System.out.println("Unable to Write File!");
         }
     }
 
@@ -37,29 +36,35 @@ public class AuthService {
     }
 
     public void SignIn() {
-        clearScreen();
+        clearScreen(); 
+
         Scanner input = new Scanner(System.in);
-        System.out.print("Enter your name: ");
+        System.out.print("Enter your name (Enter 'q' to go back): ");
         String name = input.nextLine();
-        System.out.print("Enter your Account Number: ");
+        if (name.equals("q") || name.equals("Q")) {clearScreen(); return;}
+        System.out.print("Enter your Account Number (Enter '0' to go back): ");
         int account_num = input.nextInt();
-        for (Account account : accounts) {
-            if (name.equals(account.getName()) && account_num == account.getAccountNumber()) {
+        if (account_num == 0) {clearScreen(); return;}
+
+        for (JsonElement element : arr) {
+            JsonObject obj = element.getAsJsonObject();
+            if (obj.get("name").getAsString().equals(name) || obj.get("account_num").getAsInt() == account_num) {
                 clearScreen();
-                System.out.println("Account is already existed!");
+                System.out.println("This account is already existed!");
                 System.out.println("=".repeat(30));
                 return;
             }
         }
 
-        System.out.print("Enter your Balance: ");
+        System.out.print("Enter your Balance (Enter '0' to go back): ");
         double balance = input.nextDouble();
-        accounts.add(new Account(name, account_num, balance));
+        if (balance == 0) {clearScreen(); return;}
 
         try {
-            Files.writeString(path, gson.toJson(accounts));
+            arr.add(gson.toJsonTree(new Account(name, account_num, balance)));
+            Files.writeString(path, gson.toJson(arr));
         } catch (Exception e) {
-            System.out.println("ERROR from AuthService.java: Unable to 'write/update file");
+            System.out.println("Unable to 'write/update' file");
         }
 
         clearScreen();
@@ -71,14 +76,18 @@ public class AuthService {
         clearScreen();
 
         Scanner input = new Scanner(System.in);
-        System.out.print("Enter your name: ");
+        System.out.print("Enter your name (Enter 'q' to go back): ");
         String name = input.nextLine();
-        System.out.print("Enter your Account Number: ");
+        if (name.equals("q") || name.equals("Q")) {clearScreen(); return null;}
+        System.out.print("Enter your Account Number (Enter '0' to go back): ");
         int account_num = input.nextInt();
+        if (account_num == 0) {clearScreen(); return null;}
 
-        for (Account account : accounts) {
-            if (account.getAccountNumber() == account_num && account.getName().equals(name)) {
-                return account;
+        for (JsonElement element : arr) {
+            JsonObject obj = element.getAsJsonObject();
+            if (obj.get("name").getAsString().equals(name) && obj.get("account_num").getAsInt() == account_num) {
+                current_acc = new Account(name, account_num, obj.get("balance").getAsDouble());
+                return current_acc;
             }
         }
 
@@ -86,5 +95,22 @@ public class AuthService {
         System.out.println("Sorry! Invalid name or account number!");
         System.out.println("=".repeat(30));
         return null;
+    }
+
+    public void updateBalance() {
+        for (JsonElement element : arr) {
+            JsonObject obj = element.getAsJsonObject();
+            if (obj.get("name").getAsString().equals(current_acc.getName())) {
+                obj.addProperty("balance", current_acc.getBalance());
+                break;
+            }
+        }
+
+        try {
+            Files.writeString(path, gson.toJson(arr));
+            arr = JsonParser.parseString(Files.readString(path)).getAsJsonArray();
+        } catch (Exception e) {
+            System.out.println("Unable to write/update file path!");
+        }
     }
 }

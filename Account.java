@@ -1,8 +1,7 @@
 public class Account { // This is a individual user account 'Class'.
-    private
-        String name;
-        int account_num;
-        double balance;
+    private String name;
+    private int account_num;
+    private double balance;
 
     public Account(String name, int account_num, double balance) {
         this.name = name;

@@ -55,10 +55,12 @@ public class Exercise5 {
                                         System.out.print("Enter Amount to Withdraw (Enter '0' to Exit): ");
                                         double amount = input.nextDouble();
                                         if (current_acc.Withdraw(amount)) {
+                                            authService.updateBalance();
                                             clearScreen();
                                             System.out.println("Withdraw Successful!!");
                                             break;
-                                        } else {
+                                        } else if (amount == 0) break;
+                                        else {
                                             clearScreen();
                                             System.out.println("Invalid Amount!");
                                         }
@@ -74,11 +76,12 @@ public class Exercise5 {
                                         System.out.print("Enter Amount to Deposit (Enter '0' to Exit): ");
                                         double amount = input.nextDouble();
                                         if (current_acc.Deposit(amount)) {
+                                            authService.updateBalance();
                                             clearScreen();
                                             System.out.println("Deposit Successful!!");
-                                            System.out.println("=".repeat(30));
                                             break;
-                                        } else {
+                                        } else if (amount == 0) break;
+                                        else {
                                             clearScreen();
                                             System.out.println("Invalid Amount!!");
                                         }
@@ -114,7 +117,6 @@ public class Exercise5 {
                     System.out.println("=".repeat(30));
                 }
             }
-            input.close();
         }
     }
 }
