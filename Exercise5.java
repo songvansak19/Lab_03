@@ -114,7 +114,6 @@ public class Exercise5 {
                     System.out.println("=".repeat(30));
                 }
             }
-            input.close();
         }
     }
 }
