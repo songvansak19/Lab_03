@@ -43,6 +43,15 @@ public class AuthService {
         String name = input.nextLine();
         System.out.print("Enter your Account Number: ");
         int account_num = input.nextInt();
+        for (Account account : accounts) {
+            if (name.equals(account.getName()) && account_num == account.getAccountNumber()) {
+                clearScreen();
+                System.out.println("Account is already existed!");
+                System.out.println("=".repeat(30));
+                return;
+            }
+        }
+
         System.out.print("Enter your Balance: ");
         double balance = input.nextDouble();
         accounts.add(new Account(name, account_num, balance));
