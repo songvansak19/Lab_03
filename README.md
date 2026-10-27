@@ -1,4 +1,3 @@
-# Lab_03
-this is lab 3 exercises
+# Exercise Advance Features:
 
-`Account.java` and `AuthService.java` is build for `Exercise 5`
+need to install `Gson` before run the code.
