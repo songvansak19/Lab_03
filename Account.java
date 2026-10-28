@@ -1,9 +1,9 @@
 public class Account { // This is a individual user account 'Class'.
     private String name;
-    private int account_num;
+    private long account_num;
     private double balance;
 
-    public Account(String name, int account_num, double balance) {
+    public Account(String name, long account_num, double balance) {
         this.name = name;
         this.account_num = account_num;
         this.balance = balance;
@@ -25,7 +25,7 @@ public class Account { // This is a individual user account 'Class'.
         return false;
     }
 
-    public int getAccountNumber() {
+    public long getAccountNumber() {
         return account_num;
     }
 

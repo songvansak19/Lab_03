@@ -37,18 +37,24 @@ public class AuthService {
 
     public void SignIn() {
         clearScreen(); 
-
-        Scanner input = new Scanner(System.in);
         System.out.print("Enter your name (Enter 'q' to go back): ");
+        Scanner input = new Scanner(System.in);
         String name = input.nextLine();
         if (name.equals("q") || name.equals("Q")) {clearScreen(); return;}
-        System.out.print("Enter your Account Number (Enter '0' to go back): ");
-        int account_num = input.nextInt();
-        if (account_num == 0) {clearScreen(); return;}
+
+        String str;
+        clearScreen();
+        while (true) {
+            System.out.print("Enter your Account Number (Enter 'q' to go back): ");
+            str = input.nextLine();
+            if (str.equals("q") || str.equals("Q")) {clearScreen(); return;}
+            else if (longCheck(str) != 0) break;
+        }
+        long accountNumber = longCheck(str);
 
         for (JsonElement element : arr) {
             JsonObject obj = element.getAsJsonObject();
-            if (obj.get("name").getAsString().equals(name) || obj.get("account_num").getAsInt() == account_num) {
+            if (obj.get("name").getAsString().equals(name) || obj.get("account_num").getAsLong() == accountNumber) {
                 clearScreen();
                 System.out.println("This account is already existed!");
                 System.out.println("=".repeat(30));
@@ -56,12 +62,17 @@ public class AuthService {
             }
         }
 
-        System.out.print("Enter your Balance (Enter '0' to go back): ");
-        double balance = input.nextDouble();
-        if (balance == 0) {clearScreen(); return;}
-
+        clearScreen();
+        while (true) { 
+            System.out.print("Enter your Balance (Enter '0' to go back): ");
+            str = input.nextLine();
+            if (str.equals("q") || str.equals("Q")) {clearScreen(); return;}
+            else if (doubleCheck(str) != 0) break;
+        }
+        double balance = Double.parseDouble(str);
+        
         try {
-            arr.add(gson.toJsonTree(new Account(name, account_num, balance)));
+            arr.add(gson.toJsonTree(new Account(name, accountNumber, balance)));
             Files.writeString(path, gson.toJson(arr));
         } catch (Exception e) {
             System.out.println(e.getMessage() + " [Hint: AuthService.java]");
@@ -75,18 +86,26 @@ public class AuthService {
     public Account LogIn() {
         clearScreen();
 
-        Scanner input = new Scanner(System.in);
+        clearScreen(); 
         System.out.print("Enter your name (Enter 'q' to go back): ");
+        Scanner input = new Scanner(System.in);
         String name = input.nextLine();
         if (name.equals("q") || name.equals("Q")) {clearScreen(); return null;}
-        System.out.print("Enter your Account Number (Enter '0' to go back): ");
-        int account_num = input.nextInt();
-        if (account_num == 0) {clearScreen(); return null;}
+
+        String str;
+        clearScreen();
+        while (true) {
+            System.out.print("Enter your Account Number (Enter 'q' to go back): ");
+            str = input.nextLine();
+            if (str.equals("q") || str.equals("Q")) {clearScreen(); return null;}
+            else if (longCheck(str) != 0) break;
+        }
+        long accountNumber = longCheck(str);
 
         for (JsonElement element : arr) {
             JsonObject obj = element.getAsJsonObject();
-            if (obj.get("name").getAsString().equals(name) && obj.get("account_num").getAsInt() == account_num) {
-                current_acc = new Account(name, account_num, obj.get("balance").getAsDouble());
+            if (obj.get("name").getAsString().equals(name) && obj.get("account_num").getAsLong() == accountNumber) {
+                current_acc = new Account(name, accountNumber, obj.get("balance").getAsDouble());
                 return current_acc;
             }
         }
@@ -100,7 +119,7 @@ public class AuthService {
     public void updateBalance() {
         for (JsonElement element : arr) {
             JsonObject obj = element.getAsJsonObject();
-            if (obj.get("account_num").getAsInt() == current_acc.getAccountNumber()) {
+            if (obj.get("account_num").getAsLong() == current_acc.getAccountNumber()) {
                 obj.addProperty("balance", current_acc.getBalance());
                 break;
             }
@@ -110,6 +129,29 @@ public class AuthService {
             Files.writeString(path, gson.toJson(arr));
         } catch (Exception e) {
             System.out.println(e.getMessage() + " [Hint: AuthService.java]");
+        }
+    }
+
+    public long longCheck(String str) {
+        try {
+            long num = Long.parseLong(str);
+            return num;
+        } catch (Exception e) {
+            clearScreen();
+            System.out.println("Invalid Input!");
+            System.out.println("=".repeat(30));
+            return 0;
+        }
+    }
+
+    public double doubleCheck(String str) {
+        try {
+            double num = Double.parseDouble(str);
+            return num;
+        } catch (Exception e) {
+            System.out.println("Invalid Input!");
+            System.out.println("=".repeat(30));
+            return 0;
         }
     }
 }
