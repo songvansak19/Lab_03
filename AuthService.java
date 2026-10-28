@@ -11,9 +11,9 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 public class AuthService {
-    
+
     private Account current_acc;
-    private Path path = Path.of("Users.json");
+    private Path path = Path.of("src/Users.json");
     private Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private JsonArray arr = new JsonArray();
 
@@ -35,7 +35,7 @@ public class AuthService {
         System.out.println("\033[H\033[2J");
     }
 
-    public void SignIn() {
+    public void SignIn(String currentTime) {
         clearScreen(); 
         System.out.print("Enter your name (Enter 'q' to go back): ");
         Scanner input = new Scanner(System.in);
@@ -64,19 +64,19 @@ public class AuthService {
 
         clearScreen();
         while (true) { 
-            System.out.print("Enter your Balance (Enter '0' to go back): ");
+            System.out.print("Enter your Balance (Enter 'q' to go back): ");
             str = input.nextLine();
             if (str.equals("q") || str.equals("Q")) {clearScreen(); return;}
-            else if (doubleCheck(str) != 0) break;
+            else if (doubleCheck(str) != 0 || str.equals("0")) break;
         }
         double balance = Double.parseDouble(str);
         
         try {
-            arr.add(gson.toJsonTree(new Account(name, accountNumber, balance)));
+            arr.add(gson.toJsonTree(new Account(name, accountNumber, balance, currentTime)));
             Files.writeString(path, gson.toJson(arr));
         } catch (Exception e) {
             System.out.println(e.getMessage() + " [Hint: AuthService.java]");
-        }
+        }        
 
         clearScreen();
         System.out.println("Please log in to your account!");
@@ -86,7 +86,6 @@ public class AuthService {
     public Account LogIn() {
         clearScreen();
 
-        clearScreen(); 
         System.out.print("Enter your name (Enter 'q' to go back): ");
         Scanner input = new Scanner(System.in);
         String name = input.nextLine();
@@ -105,7 +104,7 @@ public class AuthService {
         for (JsonElement element : arr) {
             JsonObject obj = element.getAsJsonObject();
             if (obj.get("name").getAsString().equals(name) && obj.get("account_num").getAsLong() == accountNumber) {
-                current_acc = new Account(name, accountNumber, obj.get("balance").getAsDouble());
+                current_acc = gson.fromJson(obj, Account.class);
                 return current_acc;
             }
         }
@@ -121,6 +120,7 @@ public class AuthService {
             JsonObject obj = element.getAsJsonObject();
             if (obj.get("account_num").getAsLong() == current_acc.getAccountNumber()) {
                 obj.addProperty("balance", current_acc.getBalance());
+                obj.add("histories", gson.toJsonTree(current_acc.getHistory()));
                 break;
             }
         }
