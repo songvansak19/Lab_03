@@ -66,7 +66,9 @@ public class AccountRepo {
         for (JsonElement element : accounts) {
             JsonObject obj = element.getAsJsonObject();
             if (obj.get("account_num").getAsLong() == current_acc.getAccountNumber()) {
+                obj.add("histories", gson.toJsonTree(current_acc.getHistory()));
                 obj.addProperty("balance", current_acc.getBalance());
+                break;
             }
         }
         try {Files.writeString(path, gson.toJson(accounts));}
