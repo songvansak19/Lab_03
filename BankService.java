@@ -5,7 +5,7 @@ import java.util.Scanner;
 public class BankService {
 
     private Scanner input;
-    private Path path = Path.of("src/Users.json");
+    private Path path = Path.of("Users.json");
     private AccountRepo accountRepo = new AccountRepo(path);
 
     public BankService(Scanner input) {
