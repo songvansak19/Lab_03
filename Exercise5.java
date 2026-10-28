@@ -35,7 +35,7 @@ public class Exercise5 {
             }
             int option = (int) authService.doubleCheck(string);
             switch (option) {
-                case 1 -> authService.SignIn(getCurrentTime());
+                case 1 -> authService.Register(getCurrentTime());
                 case 2 -> {
                     current_acc = authService.LogIn();
                     if (current_acc != null) {
@@ -77,7 +77,6 @@ public class Exercise5 {
                                         else if (authService.doubleCheck(str) != 0) {
                                             double amount = authService.doubleCheck(str);
                                             if (current_acc.Withdraw(amount, getCurrentTime())) {
-                                                authService.updateBalance();
                                                 clearScreen();
                                                 System.out.println("Withdraw Successful!!");
                                                 System.out.println("=".repeat(30));
@@ -98,7 +97,6 @@ public class Exercise5 {
                                         else if (authService.doubleCheck(str) != 0) {
                                             double amount = authService.doubleCheck(str);
                                             if (current_acc.Deposit(amount, getCurrentTime())) {
-                                                authService.updateBalance();
                                                 clearScreen();
                                                 System.out.println("Deposit Successful!!");
                                                 System.out.println("=".repeat(30));

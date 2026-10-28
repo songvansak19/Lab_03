@@ -1,83 +1,58 @@
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Scanner;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 public class BankService {
 
     private Scanner input;
-    private Account current_acc;
     private Path path = Path.of("src/Users.json");
-    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
-    private JsonArray arr = new JsonArray();
+    private AccountRepo accountRepo = new AccountRepo(path);
 
     public BankService(Scanner input) {
         this.input = input;
-        try {
-            if (!Files.exists(path)) {
-                Files.writeString(path, gson.toJson(arr));
-            } else {
-                String reader = Files.readString(path);
-                JsonElement element = JsonParser.parseString(reader);
-                arr = element.getAsJsonArray();
-            }
-        } catch (Exception e) {
-            System.out.println(e.getMessage() + " [Hint: AuthService.java]");
-        }
     }
 
     public void clearScreen() {
         System.out.println("\033[H\033[2J");
     }
 
-    public void SignIn(String currentTime) {
+    public void Register(String currentTime) {
+        String name;
+        long accountNumber;
+        double balance;
+        String str;
+
         clearScreen(); 
         System.out.print("Enter your name (Enter 'q' to go back): ");
-        String name = input.nextLine();
+        name = input.nextLine();
         if (name.equals("q") || name.equals("Q")) {clearScreen(); return;}
-
-        String str;
+        
         clearScreen();
         while (true) {
             System.out.print("Enter your Account Number (Enter 'q' to go back): ");
             str = input.nextLine();
+            accountNumber = longCheck(str);
             if (str.equals("q") || str.equals("Q")) {clearScreen(); return;}
-            else if (longCheck(str) != 0) break;
+            else if (accountNumber != 0) break;
         }
-        long accountNumber = longCheck(str);
-
-        for (JsonElement element : arr) {
-            JsonObject obj = element.getAsJsonObject();
-            if (obj.get("name").getAsString().equals(name) || obj.get("account_num").getAsLong() == accountNumber) {
-                clearScreen();
-                System.out.println("This account is already existed!");
-                System.out.println("=".repeat(30));
-                return;
-            }
+        
+        if (accountRepo.findAccountNumber(accountNumber) || accountRepo.findName(name)) {
+            clearScreen();
+            System.out.println("This account is already existed!");
+            System.out.println("=".repeat(30));
+            return;
         }
 
         clearScreen();
         while (true) { 
             System.out.print("Enter your Balance (Enter 'q' to go back): ");
             str = input.nextLine();
+            balance = Double.parseDouble(str);
             if (str.equals("q") || str.equals("Q")) {clearScreen(); return;}
-            else if (doubleCheck(str) != 0 || str.equals("0")) break;
+            else if (balance != 0 || str.equals("0")) break;
         }
-        double balance = Double.parseDouble(str);
         
-        try {
-            arr.add(gson.toJsonTree(new Account(name, accountNumber, balance, currentTime)));
-            Files.writeString(path, gson.toJson(arr));
-        } catch (Exception e) {
-            System.out.println(e.getMessage() + " [Hint: AuthService.java]");
-        }        
+        accountRepo.update(new Account(name, accountNumber, balance, currentTime));
 
         clearScreen();
         System.out.println("Please log in to your account!");
@@ -86,50 +61,30 @@ public class BankService {
 
     public Account LogIn() {
         clearScreen();
+        String name;
+        long accountNumber;
+        String str;
 
         System.out.print("Enter your name (Enter 'q' to go back): ");
-        String name = input.nextLine();
+        name = input.nextLine();
         if (name.equals("q") || name.equals("Q")) {clearScreen(); return null;}
 
-        String str;
         clearScreen();
         while (true) {
             System.out.print("Enter your Account Number (Enter 'q' to go back): ");
             str = input.nextLine();
+            accountNumber = longCheck(str);
             if (str.equals("q") || str.equals("Q")) {clearScreen(); return null;}
-            else if (longCheck(str) != 0) break;
+            else if (accountNumber != 0) break;
         }
-        long accountNumber = longCheck(str);
 
-        for (JsonElement element : arr) {
-            JsonObject obj = element.getAsJsonObject();
-            if (obj.get("name").getAsString().equals(name) && obj.get("account_num").getAsLong() == accountNumber) {
-                current_acc = gson.fromJson(obj, Account.class);
-                return current_acc;
-            }
-        }
+        if (accountRepo.findName(name) && accountRepo.findAccountNumber(accountNumber))
+            return accountRepo.getAccount(accountNumber);
 
         clearScreen();
         System.out.println("Sorry! Invalid name or account number!");
         System.out.println("=".repeat(30));
         return null;
-    }
-
-    public void updateBalance() {
-        for (JsonElement element : arr) {
-            JsonObject obj = element.getAsJsonObject();
-            if (obj.get("account_num").getAsLong() == current_acc.getAccountNumber()) {
-                obj.addProperty("balance", current_acc.getBalance());
-                obj.add("histories", gson.toJsonTree(current_acc.getHistory()));
-                break;
-            }
-        }
-
-        try {
-            Files.writeString(path, gson.toJson(arr));
-        } catch (Exception e) {
-            System.out.println(e.getMessage() + " [Hint: AuthService.java]");
-        }
     }
 
     public long longCheck(String str) {
