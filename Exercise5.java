@@ -53,7 +53,7 @@ public class Exercise5 {
                                 System.out.println("5 - Log out");
                                 System.out.print("Your Option: ");
                                 string = input.nextLine();
-                                if (option >= 1 && option <= 5) {
+                                if (authService.doubleCheck(string) >= 1 && authService.doubleCheck(string) <= 5) {
                                     break;
                                 } else {clearScreen(); System.out.println("Invalid Option!!\n" + "=".repeat(30));}
                             }

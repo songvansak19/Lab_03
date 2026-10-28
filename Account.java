@@ -19,7 +19,7 @@ public class Account { // This is a individual user account 'Class'.
     public boolean Deposit(double amount, String currentTime) {
         if (amount >= 0) {
             balance += amount;
-            histories.add("Deposit:\t " + amount + "\tDate: " + currentTime);
+            histories.add("Deposit:\t " + amount + "  \tDate: " + currentTime);
             return true;
         }
         return false;
