@@ -10,7 +10,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-public class AuthService {
+public class BankService {
 
     private Scanner input;
     private Account current_acc;
@@ -18,7 +18,7 @@ public class AuthService {
     private Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private JsonArray arr = new JsonArray();
 
-    public AuthService(Scanner input) {
+    public BankService(Scanner input) {
         this.input = input;
         try {
             if (!Files.exists(path)) {

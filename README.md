@@ -1,3 +1,5 @@
 # Exercise Advance Features:
 
-need to install `Gson` before run the code.
+Need to install `Gson` before run the code.
+
+Just clone everything into you `src/` directory if you are using `eclipse`.

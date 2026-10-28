@@ -8,7 +8,11 @@ public class Account { // This is a individual user account 'Class'.
     private double balance;
     private ArrayList <String> histories = new ArrayList<>();
     
-    public Account(String name, long account_num, double balance, String currentTime) {
+    public Account(String name,
+        long account_num,
+        double balance,
+        String currentTime
+    ) {
         this.name = name;
         this.account_num = account_num;
         this.balance = balance;
@@ -16,7 +20,7 @@ public class Account { // This is a individual user account 'Class'.
         histories.add("Initial Balance: " + this.balance + "\n");
     }
 
-    public boolean Deposit(double amount, String currentTime) {
+    public boolean Deposit(double amount,String currentTime) {
         if (amount >= 0) {
             balance += amount;
             histories.add("Deposit:\t " + amount + "  \tDate: " + currentTime);

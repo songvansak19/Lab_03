@@ -18,7 +18,7 @@ public class Exercise5 {
     public static void main(String[] args) {
         Account current_acc;
         Scanner input = new Scanner(System.in);
-        AuthService authService = new AuthService(input);
+        BankService authService = new BankService(input);
 
         while (true) {
             String string;
