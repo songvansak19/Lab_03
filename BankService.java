@@ -52,7 +52,7 @@ public class BankService {
             else if (balance != 0 || str.equals("0")) break;
         }
         
-        accountRepo.update(new Account(name, accountNumber, balance, currentTime));
+        accountRepo.save(new Account(name, accountNumber, balance, currentTime));
 
         clearScreen();
         System.out.println("Please log in to your account!");
@@ -60,11 +60,11 @@ public class BankService {
     }
 
     public Account LogIn() {
-        clearScreen();
         String name;
         long accountNumber;
         String str;
-
+        
+        clearScreen();
         System.out.print("Enter your name (Enter 'q' to go back): ");
         name = input.nextLine();
         if (name.equals("q") || name.equals("Q")) {clearScreen(); return null;}
@@ -85,6 +85,20 @@ public class BankService {
         System.out.println("Sorry! Invalid name or account number!");
         System.out.println("=".repeat(30));
         return null;
+    }
+
+    public boolean Deposit(Account current_acc, double amount,String currentTime) {
+        if (amount >= 0) {
+            if (current_acc.Deposit(amount, currentTime)) {accountRepo.update(current_acc); return true;}
+        }
+        return false;
+    }
+
+    public boolean Withdraw(Account current_acc, double amount, String currentTime) {
+        if (amount >= 0 && amount <= current_acc.getBalance()) {
+            if (current_acc.Withdraw(amount, currentTime)) {accountRepo.update(current_acc); return true;}
+        }
+        return false;
     }
 
     public long longCheck(String str) {

@@ -54,9 +54,20 @@ public class AccountRepo {
         return null;
     }
 
-    public void update(Account new_account) {
+    public void save(Account new_account) {
         if (new_account != null) {
             accounts.add(gson.toJsonTree(new_account));
+        }
+        try {Files.writeString(path, gson.toJson(accounts));}
+        catch (Exception e) {System.out.println(e.getMessage());}
+    }
+
+    public void update(Account current_acc) {
+        for (JsonElement element : accounts) {
+            JsonObject obj = element.getAsJsonObject();
+            if (obj.get("account_num").getAsLong() == current_acc.getAccountNumber()) {
+                obj.addProperty("balance", current_acc.getBalance());
+            }
         }
         try {Files.writeString(path, gson.toJson(accounts));}
         catch (Exception e) {System.out.println(e.getMessage());}

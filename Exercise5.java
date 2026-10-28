@@ -76,7 +76,7 @@ public class Exercise5 {
                                         if (str.equals("q") || str.equals("Q")) {clearScreen(); break;}
                                         else if (authService.doubleCheck(str) != 0) {
                                             double amount = authService.doubleCheck(str);
-                                            if (current_acc.Withdraw(amount, getCurrentTime())) {
+                                            if (authService.Withdraw(current_acc, amount, getCurrentTime())) {
                                                 clearScreen();
                                                 System.out.println("Withdraw Successful!!");
                                                 System.out.println("=".repeat(30));
@@ -96,7 +96,7 @@ public class Exercise5 {
                                         if (str.equals("q") || str.equals("Q")) {clearScreen(); break;}
                                         else if (authService.doubleCheck(str) != 0) {
                                             double amount = authService.doubleCheck(str);
-                                            if (current_acc.Deposit(amount, getCurrentTime())) {
+                                            if (authService.Deposit(current_acc, amount, getCurrentTime())) {
                                                 clearScreen();
                                                 System.out.println("Deposit Successful!!");
                                                 System.out.println("=".repeat(30));
