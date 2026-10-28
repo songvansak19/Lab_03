@@ -16,13 +16,11 @@ public class Exercise5 {
     }
 
     public static void main(String[] args) {
-
         Account current_acc;
-
-        AuthService authService = new AuthService();
+        Scanner input = new Scanner(System.in);
+        AuthService authService = new AuthService(input);
 
         while (true) {
-            Scanner input = new Scanner(System.in);
             String string;
             while (true) { 
                 System.out.println("Enter an option below: ");
@@ -31,7 +29,7 @@ public class Exercise5 {
                 System.out.println("3 - Exit");
                 System.out.print("Your Option: ");
                 string = input.nextLine();
-                if (authService.doubleCheck(string) >= 0 && authService.doubleCheck(string) <= 3) {
+                if (authService.doubleCheck(string) >= 1 && authService.doubleCheck(string) <= 3) {
                     break;
                 } else {clearScreen(); System.out.println("Invalid Option!!\n" + "=".repeat(30));}
             }
@@ -55,7 +53,7 @@ public class Exercise5 {
                                 System.out.println("5 - Log out");
                                 System.out.print("Your Option: ");
                                 string = input.nextLine();
-                                if (option >= 0 && option <= 5) {
+                                if (option >= 1 && option <= 5) {
                                     break;
                                 } else {clearScreen(); System.out.println("Invalid Option!!\n" + "=".repeat(30));}
                             }

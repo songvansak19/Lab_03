@@ -12,12 +12,14 @@ import com.google.gson.JsonParser;
 
 public class AuthService {
 
+    private Scanner input;
     private Account current_acc;
     private Path path = Path.of("src/Users.json");
     private Gson gson = new GsonBuilder().setPrettyPrinting().create();
     private JsonArray arr = new JsonArray();
 
-    public AuthService() {
+    public AuthService(Scanner input) {
+        this.input = input;
         try {
             if (!Files.exists(path)) {
                 Files.writeString(path, gson.toJson(arr));
@@ -38,7 +40,6 @@ public class AuthService {
     public void SignIn(String currentTime) {
         clearScreen(); 
         System.out.print("Enter your name (Enter 'q' to go back): ");
-        Scanner input = new Scanner(System.in);
         String name = input.nextLine();
         if (name.equals("q") || name.equals("Q")) {clearScreen(); return;}
 
@@ -87,7 +88,6 @@ public class AuthService {
         clearScreen();
 
         System.out.print("Enter your name (Enter 'q' to go back): ");
-        Scanner input = new Scanner(System.in);
         String name = input.nextLine();
         if (name.equals("q") || name.equals("Q")) {clearScreen(); return null;}
 
