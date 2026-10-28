@@ -47,7 +47,7 @@ public class BankService {
         while (true) { 
             System.out.print("Enter your Balance (Enter 'q' to go back): ");
             str = input.nextLine();
-            balance = Double.parseDouble(str);
+            balance = doubleCheck(str);
             if (str.equals("q") || str.equals("Q")) {clearScreen(); return;}
             else if (balance != 0 || str.equals("0")) break;
         }
@@ -60,14 +60,8 @@ public class BankService {
     }
 
     public Account LogIn() {
-        String name;
         long accountNumber;
         String str;
-        
-        clearScreen();
-        System.out.print("Enter your name (Enter 'q' to go back): ");
-        name = input.nextLine();
-        if (name.equals("q") || name.equals("Q")) {clearScreen(); return null;}
 
         clearScreen();
         while (true) {
@@ -78,7 +72,7 @@ public class BankService {
             else if (accountNumber != 0) break;
         }
 
-        if (accountRepo.findName(name) && accountRepo.findAccountNumber(accountNumber))
+        if (accountRepo.findAccountNumber(accountNumber))
             return accountRepo.getAccount(accountNumber);
 
         clearScreen();
@@ -88,14 +82,14 @@ public class BankService {
     }
 
     public boolean Deposit(Account current_acc, double amount,String currentTime) {
-        if (amount >= 0) {
+        if (amount > 0) {
             if (current_acc.Deposit(amount, currentTime)) {accountRepo.update(current_acc); return true;}
         }
         return false;
     }
 
     public boolean Withdraw(Account current_acc, double amount, String currentTime) {
-        if (amount >= 0 && amount <= current_acc.getBalance()) {
+        if (amount > 0 && amount <= current_acc.getBalance()) {
             if (current_acc.Withdraw(amount, currentTime)) {accountRepo.update(current_acc); return true;}
         }
         return false;

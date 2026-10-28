@@ -12,7 +12,7 @@ import java.nio.file.Files;
 
 public class AccountRepo {
     private Path path;
-    private JsonArray accounts;
+    private JsonArray accounts = new JsonArray();
     private Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public AccountRepo(Path path) {
