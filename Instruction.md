@@ -1,17 +1,25 @@
-# Banking Account Exercise
+# Banking Account Exercise Instructions
 
-A Java console program for registering an account, logging in with an account number, checking a balance, depositing or withdrawing money, and viewing transaction history.
+This is a Java console program for registering an account, logging in with an account number, checking a balance, depositing or withdrawing money, and viewing transaction history.
 
-## Files in this repository
+## Project layout
+
+Open the `Lab` folder as the project/workspace root.
 
 ```text
-.
-├── .gitignore
-├── Account.java
-├── AccountRepo.java
-├── BankService.java
-├── Exercise5.java   # Main class
-└── README.md
+Lab/
+├── .vscode/settings.json  # Java source, output, and library configuration
+├── bin/                   # Compiled classes (generated)
+├── lib/
+│   └── gson-2.13.2.jar    # Gson dependency
+├── src/
+│   ├── Account.java
+│   ├── AccountRepo.java
+│   ├── BankService.java
+│   └── Exercise5.java     # Main class
+├── Instruction.md
+├── README.md
+└── Users.json             # Created at runtime; ignored by Git
 ```
 
 `Account` stores account details, balance, and transaction history. `BankService` handles registration, login, and account actions. `AccountRepo` reads and writes account data as JSON using Gson.
@@ -19,33 +27,32 @@ A Java console program for registering an account, logging in with an account nu
 ## Requirements
 
 - JDK 14 or newer (JDK 17 is recommended).
-- Visual Studio Code with the Java extensions, or another Java IDE.
-- Gson. The Gson JAR is not included in this repository, so each person who clones it must add the library locally.
+- Visual Studio Code with the Java extensions.
+- Gson 2.13.2. The JAR is included in `lib/`.
 
-### Install and configure Gson in VS Code
+## Gson and VS Code setup
 
-1. Download the Gson JAR from the [official Gson releases](https://github.com/google/gson/releases). This project has been using Gson 2.13.2; use the `gson-2.13.2.jar` asset for the same version.
-2. In the cloned repository, create a folder named `lib` next to `Account.java`, `AccountRepo.java`, and the other source files.
-3. Copy `gson-2.13.2.jar` into that `lib` folder. The resulting path should be `lib/gson-2.13.2.jar`.
-4. In the cloned repository, create `.vscode/settings.json` and add:
+The project is already configured to use Gson:
 
-   ```json
-   {
-     "java.project.sourcePaths": ["."],
-     "java.project.outputPath": "bin",
-     "java.project.referencedLibraries": ["lib/**/*.jar"]
-   }
-   ```
+- `.vscode/settings.json` sets `src` as the source folder and `bin` as the compiled output folder.
+- Its `java.project.referencedLibraries` setting includes `lib/**/*.jar`, which adds `lib/gson-2.13.2.jar` to the Java classpath.
 
-   The `referencedLibraries` setting tells VS Code's Java tools to add JAR files in `lib` to the project's classpath. The `sourcePaths` setting is `.` because this repository keeps its `.java` files at the repository root.
-5. Open the cloned repository folder in VS Code. Wait for the Java language tools to finish loading the project, then run `Exercise5.java` as a Java application.
+To set up the project on another computer, clone or copy the complete `Lab` project, including `.vscode/` and `lib/`. Open the `Lab` folder in VS Code and wait for the Java extension to load the project. You should not need to add the JAR manually while those folders and settings are present.
 
-If VS Code reports that `com.google.gson` cannot be found, check that the JAR is at `lib/gson-2.13.2.jar` and that the settings file is at `.vscode/settings.json` in the folder you opened.
+If the Gson JAR is missing, download the `gson-2.13.2.jar` file from the [official Gson releases](https://github.com/google/gson/releases), place it in `Lab/lib/`, and confirm `.vscode/settings.json` contains:
 
-## Run in VS Code
+```json
+"java.project.referencedLibraries": ["lib/**/*.jar"]
+```
 
-Open the cloned repository folder in VS Code, open `Exercise5.java`, and run it as a Java application. Set the run configuration's working directory to the repository folder if you want `Users.json` created there; for a `launch.json` configuration, set `"cwd": "${workspaceFolder}"`.
+If VS Code reports that `com.google.gson` cannot be found, confirm that the folder you opened is `Lab`, the JAR is at `lib/gson-2.13.2.jar`, and the referenced-libraries setting is present. Then reload the Java project.
 
-For this local `Lab` workspace, `.vscode/settings.json` already points to `src` for source files and `lib/**/*.jar` for Gson. If you clone only the files in this repository, use the setup above because that parent `Lab/.vscode` folder and `Lab/lib` folder are not included in the clone.
+## Run the program
 
-The program uses `Path.of("Users.json")`, so the file is created in the process's working directory. Set the working directory to the repository folder if you want the data file there. `Users.json` is generated at runtime and may contain account data; it is listed in `.gitignore` and should not be committed.
+1. Open the `Lab` folder in VS Code.
+2. Open `src/Exercise5.java`.
+3. Run it as a Java application.
+
+For consistent data-file placement, set the run configuration working directory to the `Lab` folder. In a VS Code `launch.json`, this is `"cwd": "${workspaceFolder}"`.
+
+The program uses `Path.of("Users.json")`, so it creates or reads `Users.json` in its working directory. The root `.gitignore` excludes this runtime data file; do not commit account data.
