@@ -48,11 +48,12 @@ public class BankService {
             System.out.print("Enter your Balance (Enter 'q' to go back): ");
             str = input.nextLine();
             balance = doubleCheck(str);
-            if (str.equals("q") || str.equals("Q")) {clearScreen(); return;}
-            else if (balance != 0 || str.equals("0")) break;
+            if (str.equals("0")) break;
+            else if (str.equals("q") || str.equals("Q")) {clearScreen(); return;}
+            if (balance < 0 || balance > 10e6) {clearScreen(); System.out.println("Invalid Amount!\n" + "=".repeat(30));}
         }
         
-        accountRepo.save(new Account(name, accountNumber, balance, currentTime));
+        accountRepo.addNew(new Account(name, accountNumber, balance, currentTime));
 
         clearScreen();
         System.out.println("Please log in to your account!");
@@ -112,6 +113,7 @@ public class BankService {
             double num = Double.parseDouble(str);
             return num;
         } catch (Exception e) {
+            clearScreen();
             System.out.println("Invalid Input!");
             System.out.println("=".repeat(30));
             return 0;

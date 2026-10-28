@@ -54,7 +54,7 @@ public class AccountRepo {
         return null;
     }
 
-    public void save(Account new_account) {
+    public void addNew(Account new_account) {
         if (new_account != null) {
             accounts.add(gson.toJsonTree(new_account));
         }
@@ -67,7 +67,7 @@ public class AccountRepo {
             JsonObject obj = element.getAsJsonObject();
             if (obj.get("account_num").getAsLong() == current_acc.getAccountNumber()) {
                 obj.add("histories", gson.toJsonTree(current_acc.getHistory()));
-                obj.addProperty("balance", current_acc.getBalance());
+                obj.add("balance", gson.toJsonTree(current_acc.getBalance()));
                 break;
             }
         }
