@@ -127,9 +127,6 @@ public class BankService {
             long num = Long.parseLong(str);
             return num;
         } catch (Exception e) {
-            clearScreen();
-            System.out.println("Invalid Input!");
-            System.out.println("=".repeat(30));
             return 0;
         }
     }
@@ -140,8 +137,6 @@ public class BankService {
             return num;
         } catch (Exception e) {
             clearScreen();
-            System.out.println("Invalid Input!");
-            System.out.println("=".repeat(30));
             return 0;
         }
     }
