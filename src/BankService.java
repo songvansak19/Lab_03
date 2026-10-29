@@ -83,7 +83,8 @@ public class BankService {
         password = input.nextLine();
         if (password.equals("q") || password.equals("Q")) {clearScreen(); return null;}
 
-        if (accountRepo.getAccount(accountNumber, password) != null) return accountRepo.getAccount(accountNumber, password);
+        Account account = accountRepo.getAccount(accountNumber, password);
+        if (account != null) return account;
 
         clearScreen();
         System.out.println("Sorry! Invalid name or account number!");

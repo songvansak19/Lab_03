@@ -7,7 +7,7 @@ public class Account { // This is a individual user account 'Class'.
     private long account_num;
     private String password;
     private double balance;
-    private ArrayList <String> histories = new ArrayList<>();
+    private ArrayList <String> history = new ArrayList<>();
     
     public Account(String name,
         long account_num,
@@ -19,14 +19,14 @@ public class Account { // This is a individual user account 'Class'.
         this.account_num = account_num;
         this.password = password;
         this.balance = balance;
-        histories.add("Account Creation Date: " + currentTime);
-        histories.add("Initial Balance: " + this.balance + "\n");
+        history.add("Account Creation Date: " + currentTime);
+        history.add("Initial Balance: " + this.balance + "\n");
     }
 
     public boolean Deposit(double amount,String currentTime) {
         if (amount > 0 && amount <= 10e6) {
             balance += amount;
-            histories.add("Deposit: " + amount + "      Date: " + currentTime);
+            history.add("Deposit: " + amount + "      Date: " + currentTime);
             return true;
         }
         return false;
@@ -35,7 +35,7 @@ public class Account { // This is a individual user account 'Class'.
     public boolean Withdraw(double amount, String currentTime) {
         if (amount > 0 && amount <= balance) {
             balance -= amount;
-            histories.add("Withdraw: " + amount + "      Date: " + currentTime);
+            history.add("Withdraw: " + amount + "      Date: " + currentTime);
             return true;
         }
         return false;
@@ -44,7 +44,7 @@ public class Account { // This is a individual user account 'Class'.
     public boolean Transfer(String name, long account_num, double amount, String currentTime) {
         if (amount > 0 && amount <= balance) {
             balance -= amount;
-            histories.add("Transfer: " + amount + 
+            history.add("Transfer: " + amount + 
             "      To Account: " + account_num + " (" + name + ")" + 
             "      Date: " + currentTime);
             return true;
@@ -54,7 +54,7 @@ public class Account { // This is a individual user account 'Class'.
 
     public void Receive(String name, long account_num, double amount, String currentTime) {
         balance += amount;
-        histories.add("Receive: " + amount + 
+        history.add("Receive: " + amount + 
         "      From Account: " + account_num + " (" + name + ")" +
         "      Date: " + currentTime);
     }
@@ -76,6 +76,6 @@ public class Account { // This is a individual user account 'Class'.
     }
 
     public ArrayList <String> getHistory() {
-        return histories;
+        return history;
     }
 }

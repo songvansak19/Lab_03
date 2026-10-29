@@ -46,14 +46,6 @@ public class AccountRepo {
         return false;
     }
 
-    public boolean findPassword(String password) {
-        for (JsonElement element : accounts) {
-            JsonObject obj = element.getAsJsonObject();
-            if (obj.get("password").getAsString().equals(password)) return true;
-        }
-        return false;
-    }
-
     public Account getAccount(long account_num, String password) {
         for (JsonElement element : accounts) {
             JsonObject obj = element.getAsJsonObject();
@@ -85,7 +77,7 @@ public class AccountRepo {
         for (JsonElement element : accounts) {
             JsonObject obj = element.getAsJsonObject();
             if (obj.get("account_num").getAsLong() == current_acc.getAccountNumber()) {
-                obj.add("histories", gson.toJsonTree(current_acc.getHistory()));
+                obj.add("history", gson.toJsonTree(current_acc.getHistory()));
                 obj.add("balance", gson.toJsonTree(current_acc.getBalance()));
                 break;
             }

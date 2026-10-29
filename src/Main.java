@@ -4,7 +4,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class Exercise5 {
+public class Main {
     static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyy-MM-dd | HH:mm");
 
     public static String getCurrentTime() {
