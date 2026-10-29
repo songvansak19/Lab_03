@@ -1,3 +1,4 @@
+
 public class Account { // This is a individual user account 'Class'.
     private String name;
     private int account_num;
