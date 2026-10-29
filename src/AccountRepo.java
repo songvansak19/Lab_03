@@ -46,6 +46,14 @@ public class AccountRepo {
         return false;
     }
 
+    public boolean findPassword(String password) {
+        for (JsonElement element : accounts) {
+            JsonObject obj = element.getAsJsonObject();
+            if (obj.get("password").getAsString().equals(password)) return true;
+        }
+        return false;
+    }
+
     public Account getAccount(long account_num) {
         for (JsonElement element : accounts) {
             JsonObject obj = element.getAsJsonObject();

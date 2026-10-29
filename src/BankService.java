@@ -17,7 +17,7 @@ public class BankService {
     }
 
     public void Register(String currentTime) {
-        String name;
+        String name, password;
         long accountNumber;
         double balance;
         String str;
@@ -44,6 +44,11 @@ public class BankService {
         }
 
         clearScreen();
+        System.out.print("Enter New password (Enter 'q' to go back): ");
+        password = input.nextLine();
+        if (password.equals("q") || password.equals("Q")) {clearScreen(); return;}
+
+        clearScreen();
         while (true) { 
             System.out.print("Enter your Balance (Enter 'q' to go back): ");
             str = input.nextLine();
@@ -53,7 +58,7 @@ public class BankService {
             if (balance < 0 || balance > 10e6) {clearScreen(); System.out.println("Invalid Amount!\n" + "=".repeat(30));}
         }
         
-        accountRepo.addNew(new Account(name, accountNumber, balance, currentTime));
+        accountRepo.addNew(new Account(name, accountNumber, password, balance, currentTime));
 
         clearScreen();
         System.out.println("Please log in to your account!");
@@ -62,7 +67,7 @@ public class BankService {
 
     public Account LogIn() {
         long accountNumber;
-        String str;
+        String str, password;
 
         clearScreen();
         while (true) {
@@ -73,7 +78,12 @@ public class BankService {
             else if (accountNumber != 0) break;
         }
 
-        if (accountRepo.findAccountNumber(accountNumber))
+        clearScreen();
+        System.out.print("Enter your password (Enter 'q' to go back): ");
+        password = input.nextLine();
+        if (password.equals("q") || password.equals("Q")) {clearScreen(); return null;}
+
+        if (accountRepo.findAccountNumber(accountNumber) && accountRepo.findPassword(password))
             return accountRepo.getAccount(accountNumber);
 
         clearScreen();
@@ -99,11 +109,11 @@ public class BankService {
     public boolean Transfer(Account current_acc, long account_num, double amount, String currentTime) {
         Account accountA = current_acc;
         if (accountRepo.findAccountNumber(account_num)) { // Transfer from Account A (You)
-            if (accountA.Transfer(account_num, amount, currentTime)) {
+            Account accountB = accountRepo.getAccount(account_num); // The receiver (Account B)
+            if (accountA.Transfer(accountB.getName(), account_num, amount, currentTime)) {
                 accountRepo.update(accountA); // Update Account A Transaction history and Current balance.
 
-                Account accountB = accountRepo.getAccount(account_num); // The receiver (Account B)
-                accountB.Receive(current_acc.getAccountNumber(), amount, currentTime);
+                accountB.Receive(current_acc.getName(), current_acc.getAccountNumber(), amount, currentTime);
                 accountRepo.update(accountB); // Update Account B Transaction history and Current balance.
                 return true;
             }

@@ -18,7 +18,7 @@ public class Exercise5 {
     public static void main(String[] args) {
         Account current_acc;
         Scanner input = new Scanner(System.in);
-        BankService authService = new BankService(input);
+        BankService bankService = new BankService(input);
 
         while (true) {
             String string;
@@ -29,15 +29,15 @@ public class Exercise5 {
                 System.out.println("3 - Exit");
                 System.out.print("Your Option: ");
                 string = input.nextLine();
-                if (authService.doubleCheck(string) >= 1 && authService.doubleCheck(string) <= 3) {
+                if (bankService.longCheck(string) >= 1 && bankService.longCheck(string) <= 3) {
                     break;
                 } else {clearScreen(); System.out.println("Invalid Option!!\n" + "=".repeat(30));}
             }
-            int option = (int) authService.doubleCheck(string);
+            int option = (int) bankService.longCheck(string);
             switch (option) {
-                case 1 -> authService.Register(getCurrentTime());
+                case 1 -> bankService.Register(getCurrentTime());
                 case 2 -> {
-                    current_acc = authService.LogIn();
+                    current_acc = bankService.LogIn();
                     if (current_acc != null) {
                         clearScreen();
                         System.out.println("Welcome! " + current_acc.getName());
@@ -54,11 +54,11 @@ public class Exercise5 {
                                 System.out.println("6 - Log out");
                                 System.out.print("Your Option: ");
                                 string = input.nextLine();
-                                if (authService.doubleCheck(string) >= 1 && authService.doubleCheck(string) <= 6) {
+                                if (bankService.longCheck(string) >= 1 && bankService.longCheck(string) <= 6) {
                                     break;
                                 } else {clearScreen(); System.out.println("Invalid Option!!\n" + "=".repeat(30));}
                             }
-                            option = (int) authService.doubleCheck(string);
+                            option = (int) bankService.longCheck(string);
                             switch (option) {
                                 case 1 -> {
                                     clearScreen();
@@ -75,9 +75,9 @@ public class Exercise5 {
                                         System.out.print("Enter Amount to Withdraw (Enter 'q' to Exit): ");
                                         String str = input.nextLine();
                                         if (str.equals("q") || str.equals("Q")) {clearScreen(); break;}
-                                        else if (authService.doubleCheck(str) != 0) {
-                                            double amount = authService.doubleCheck(str);
-                                            if (authService.Withdraw(current_acc, amount, getCurrentTime())) {
+                                        else if (bankService.longCheck(str) != 0) {
+                                            double amount = bankService.doubleCheck(str);
+                                            if (bankService.Withdraw(current_acc, amount, getCurrentTime())) {
                                                 clearScreen();
                                                 System.out.println("Withdraw Successful!!");
                                                 System.out.println("=".repeat(30));
@@ -95,9 +95,9 @@ public class Exercise5 {
                                         System.out.print("Enter Amount to Deposit (Enter 'q' to Exit): ");
                                         String str = input.nextLine();
                                         if (str.equals("q") || str.equals("Q")) {clearScreen(); break;}
-                                        else if (authService.doubleCheck(str) != 0) {
-                                            double amount = authService.doubleCheck(str);
-                                            if (authService.Deposit(current_acc, amount, getCurrentTime())) {
+                                        else if (bankService.longCheck(str) != 0) {
+                                            double amount = bankService.doubleCheck(str);
+                                            if (bankService.Deposit(current_acc, amount, getCurrentTime())) {
                                                 clearScreen();
                                                 System.out.println("Deposit Successful!!");
                                                 System.out.println("=".repeat(30));
@@ -114,9 +114,9 @@ public class Exercise5 {
 
                                     clearScreen();
                                     while (true) {
-                                        System.out.print("Enter your Account Number (Enter 'q' to go back): ");
+                                        System.out.print("Enter Receiver Account Number (Enter 'q' to go back): ");
                                         str = input.nextLine();
-                                        account_num = authService.longCheck(str);
+                                        account_num = bankService.longCheck(str);
                                         if (str.equals("q") || str.equals("Q")) {clearScreen(); break;}
                                         else {clearScreen(); System.out.println("Invalid Input!\n" + "=".repeat(30));}
                                     
@@ -125,17 +125,17 @@ public class Exercise5 {
                                         System.out.println("Your Balance: " + current_acc.getBalance());
                                         System.out.print("Enter Amount to Transfer (Enter 'q' to Exit): ");
                                         str = input.nextLine();
-                                        amount = authService.doubleCheck(str);
+                                        amount = bankService.doubleCheck(str);
                                         if (str.equals("q") || str.equals("Q")) {clearScreen(); break;}
-                                        else if (amount > 0) {
-                                            if (authService.Transfer(current_acc, account_num, amount, getCurrentTime())) break;
-                                            else {clearScreen(); System.out.println("Transfer Failed! Please Check the Input Again!\n" + "=".repeat(30));}
-                                        } else {clearScreen(); System.out.println("Invalid Input!\n" + "=".repeat(30));}
+                                        else if (bankService.Transfer(current_acc, account_num, amount, getCurrentTime())) {
+                                            clearScreen();
+                                            System.out.println("Transfer Successful!!");
+                                            System.out.println("=".repeat(30));
+                                            break;
+                                        }
+                                        else {clearScreen(); System.out.println("Transfer Failed! Please Check the Input Again!\n" + "=".repeat(30));}
                                     }
 
-                                    clearScreen();
-                                    System.out.println("Transfer Successful!!");
-                                    System.out.println("=".repeat(30));
                                 }
                                 case 5 -> {
                                     clearScreen();
