@@ -1,5 +1,11 @@
+# Compiled class files
 bin/
 *.class
-*.pdf
+
+# Eclipse local configuration
+.classpath
+.project
+.settings/
+
+# Database
 Users.json
-*.drawio
