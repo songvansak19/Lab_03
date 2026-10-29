@@ -57,14 +57,18 @@ public class AccountRepo {
     public Account getAccount(long account_num, String password) {
         for (JsonElement element : accounts) {
             JsonObject obj = element.getAsJsonObject();
-            if (password != null) {
-                if (obj.get("account_num").getAsLong() == account_num &&
-                    obj.get("password").getAsString().equals(password)) 
-                        return gson.fromJson(obj, Account.class);
-            } else {
-                if (obj.get("account_num").getAsLong() == account_num) 
+            if (obj.get("account_num").getAsLong() == account_num &&
+                obj.get("password").getAsString().equals(password)) 
                     return gson.fromJson(obj, Account.class);
-            }
+        }
+        return null;
+    }
+
+    public Account getAccount(long account_num) {
+        for (JsonElement element : accounts) {
+            JsonObject obj = element.getAsJsonObject();
+            if (obj.get("account_num").getAsLong() == account_num) 
+                return gson.fromJson(obj, Account.class);
         }
         return null;
     }
