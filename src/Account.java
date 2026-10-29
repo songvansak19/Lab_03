@@ -23,7 +23,7 @@ public class Account { // This is a individual user account 'Class'.
     public boolean Deposit(double amount,String currentTime) {
         if (amount > 0 && amount <= 10e6) {
             balance += amount;
-            histories.add("Deposit:\t " + amount + "  \tDate: " + currentTime);
+            histories.add("Deposit: " + amount + "      Date: " + currentTime);
             return true;
         }
         return false;
@@ -32,10 +32,24 @@ public class Account { // This is a individual user account 'Class'.
     public boolean Withdraw(double amount, String currentTime) {
         if (amount > 0 && amount <= balance) {
             balance -= amount;
-            histories.add("Withdraw:\t " + amount + "  \tDate: " + currentTime);
+            histories.add("Withdraw: " + amount + "      Date: " + currentTime);
             return true;
         }
         return false;
+    }
+
+    public boolean Transfer(long account_num, double amount, String currentTime) {
+        if (amount > 0 && amount <= balance) {
+            balance -= amount;
+            histories.add("Transfer: " + amount + "      To Account: " + account_num + "      Date: " + currentTime);
+            return true;
+        }
+        return false;
+    }
+
+    public void Receive(long account_num, double amount, String currentTime) {
+        balance += amount;
+        histories.add("Receive: " + amount + "      From Account: " + account_num + "      Date: " + currentTime);
     }
 
     public long getAccountNumber() {

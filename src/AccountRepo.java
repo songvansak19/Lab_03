@@ -62,7 +62,7 @@ public class AccountRepo {
         catch (Exception e) {System.out.println(e.getMessage());}
     }
 
-    public void update(Account current_acc) {
+    public void update(Account current_acc) { 
         for (JsonElement element : accounts) {
             JsonObject obj = element.getAsJsonObject();
             if (obj.get("account_num").getAsLong() == current_acc.getAccountNumber()) {

@@ -96,6 +96,21 @@ public class BankService {
         return false;
     }
 
+    public boolean Transfer(Account current_acc, long account_num, double amount, String currentTime) {
+        Account accountA = current_acc;
+        if (accountRepo.findAccountNumber(account_num)) { // Transfer from Account A (You)
+            if (accountA.Transfer(account_num, amount, currentTime)) {
+                accountRepo.update(accountA); // Update Account A Transaction history and Current balance.
+
+                Account accountB = accountRepo.getAccount(account_num); // The receiver (Account B)
+                accountB.Receive(current_acc.getAccountNumber(), amount, currentTime);
+                accountRepo.update(accountB); // Update Account B Transaction history and Current balance.
+                return true;
+            }
+        }
+        return false;
+    }
+
     public long longCheck(String str) {
         try {
             long num = Long.parseLong(str);

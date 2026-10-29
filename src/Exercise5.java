@@ -49,11 +49,12 @@ public class Exercise5 {
                                 System.out.println("1 - Check Balance");
                                 System.out.println("2 - Withdraw Money");
                                 System.out.println("3 - Deposit Money");
-                                System.out.println("4 - History");
-                                System.out.println("5 - Log out");
+                                System.out.println("4 - Transfer Money");
+                                System.out.println("5 - History");
+                                System.out.println("6 - Log out");
                                 System.out.print("Your Option: ");
                                 string = input.nextLine();
-                                if (authService.doubleCheck(string) >= 1 && authService.doubleCheck(string) <= 5) {
+                                if (authService.doubleCheck(string) >= 1 && authService.doubleCheck(string) <= 6) {
                                     break;
                                 } else {clearScreen(); System.out.println("Invalid Option!!\n" + "=".repeat(30));}
                             }
@@ -107,6 +108,36 @@ public class Exercise5 {
                                     }
                                 }
                                 case 4 -> {
+                                    long account_num;
+                                    double amount;
+                                    String str;
+
+                                    clearScreen();
+                                    while (true) {
+                                        System.out.print("Enter your Account Number (Enter 'q' to go back): ");
+                                        str = input.nextLine();
+                                        account_num = authService.longCheck(str);
+                                        if (str.equals("q") || str.equals("Q")) {clearScreen(); break;}
+                                        else {clearScreen(); System.out.println("Invalid Input!\n" + "=".repeat(30));}
+                                    
+                                        clearScreen();
+                                        System.out.println("=".repeat(30));
+                                        System.out.println("Your Balance: " + current_acc.getBalance());
+                                        System.out.print("Enter Amount to Transfer (Enter 'q' to Exit): ");
+                                        str = input.nextLine();
+                                        amount = authService.doubleCheck(str);
+                                        if (str.equals("q") || str.equals("Q")) {clearScreen(); break;}
+                                        else if (amount > 0) {
+                                            if (authService.Transfer(current_acc, account_num, amount, getCurrentTime())) break;
+                                            else {clearScreen(); System.out.println("Transfer Failed! Please Check the Input Again!\n" + "=".repeat(30));}
+                                        } else {clearScreen(); System.out.println("Invalid Input!\n" + "=".repeat(30));}
+                                    }
+
+                                    clearScreen();
+                                    System.out.println("Transfer Successful!!");
+                                    System.out.println("=".repeat(30));
+                                }
+                                case 5 -> {
                                     clearScreen();
                                     System.out.println("=".repeat(60));
                                     System.out.println("Your History:");
@@ -117,7 +148,7 @@ public class Exercise5 {
                                     System.out.println("=".repeat(60));
                                     break;
                                 }
-                                case 5 -> {
+                                case 6 -> {
                                     clearScreen();
                                     System.out.println("Logged out!!");
                                     System.out.println("=".repeat(30));
