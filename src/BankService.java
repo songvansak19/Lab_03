@@ -84,7 +84,7 @@ public class BankService {
         if (password.equals("q") || password.equals("Q")) {clearScreen(); return null;}
 
         if (accountRepo.findAccountNumber(accountNumber) && accountRepo.findPassword(password))
-            return accountRepo.getAccount(accountNumber);
+            return accountRepo.getAccount(accountNumber, password);
 
         clearScreen();
         System.out.println("Sorry! Invalid name or account number!");
@@ -108,8 +108,8 @@ public class BankService {
 
     public boolean Transfer(Account current_acc, long account_num, double amount, String currentTime) {
         Account accountA = current_acc;
-        if (accountRepo.findAccountNumber(account_num)) { // Transfer from Account A (You)
-            Account accountB = accountRepo.getAccount(account_num); // The receiver (Account B)
+        if (account_num != accountA.getAccountNumber() && accountRepo.findAccountNumber(account_num)) { // Transfer from Account A (You)
+            Account accountB = accountRepo.getAccount(account_num, null); // The receiver (Account B)
             if (accountA.Transfer(accountB.getName(), account_num, amount, currentTime)) {
                 accountRepo.update(accountA); // Update Account A Transaction history and Current balance.
 

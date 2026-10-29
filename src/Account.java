@@ -71,6 +71,10 @@ public class Account { // This is a individual user account 'Class'.
         return balance;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public ArrayList <String> getHistory() {
         return histories;
     }
