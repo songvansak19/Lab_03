@@ -1,12 +1,17 @@
 package Lab03;
 
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Scanner;
 
+import org.jline.terminal.Attributes;
+import org.jline.terminal.Terminal;
+import org.jline.terminal.TerminalBuilder;
+
 public class Main {
-    static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyy-MM-dd | HH:mm");
+	static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyy-MM-dd | HH:mm");
 
     public static String getCurrentTime() {
         return LocalDateTime.now().format(formatter);
@@ -15,29 +20,54 @@ public class Main {
     public static void clearScreen() {
         System.out.println("\033[H\033[2J");
     }
+    
+    static int readKey() throws IOException {
+        try (Terminal terminal = TerminalBuilder.builder()
+                .system(true)
+                .build()) {
+            Attributes saved = terminal.enterRawMode();
+            try {
+                return terminal.reader().read();
+            } finally {
+                terminal.setAttributes(saved);
+            }
+        }
+    }
+    
+    public static void historyDisplay(ArrayList <String> histories) {
+    	clearScreen();
+        System.out.println("=".repeat(60));
+        System.out.println("Your History:");
+        for (String history : histories) {
+            System.out.println(" - " + history);
+        }
+        System.out.println("=".repeat(60));
+    }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         Account current_acc;
         Scanner input = new Scanner(System.in);
         BankService bankService = new BankService(input);
-
+        
+        String str;
+        int key;
+        
+        clearScreen();
         while (true) {
-            String str;
             while (true) { 
                 System.out.println("Enter an option below: ");
                 System.out.println("1 - Sign in");
                 System.out.println("2 - Log in");
                 System.out.println("3 - Exit");
                 System.out.print("Your Option: ");
-                str = input.nextLine();
-                if (bankService.longCheck(str) >= 1 && bankService.longCheck(str) <= 3) {
+                key = (char) readKey();
+                if (key >= '1' && key <= '3') {
                     break;
                 } else {clearScreen(); System.out.println("Invalid Option!!\n" + "=".repeat(30));}
             }
-            int option = (int) bankService.longCheck(str);
-            switch (option) {
-                case 1 -> bankService.Register(getCurrentTime());
-                case 2 -> {
+            switch (key) {
+                case '1' -> bankService.Register(getCurrentTime());
+                case '2' -> {
                     current_acc = bankService.LogIn();
                     if (current_acc != null) {
                         clearScreen();
@@ -54,21 +84,20 @@ public class Main {
                                 System.out.println("5 - History");
                                 System.out.println("6 - Log out");
                                 System.out.print("Your Option: ");
-                                str = input.nextLine();
-                                if (bankService.longCheck(str) >= 1 && bankService.longCheck(str) <= 6) {
+                                key = (char) readKey();
+                                if (key >= '1' && key <= '6') {
                                     break;
                                 } else {clearScreen(); System.out.println("Invalid Option!!\n" + "=".repeat(30));}
                             }
-                            option = (int) bankService.longCheck(str);
-                            switch (option) {
-                                case 1 -> {
+                            switch (key) {
+                                case '1' -> {
                                     clearScreen();
                                     System.out.println("=".repeat(30));
                                     System.out.println("Your Current Balance: " + current_acc.getBalance());
                                     System.out.println("=".repeat(30));
                                     break;
                                 }
-                                case 2 -> {
+                                case '2' -> {
                                 	double amount;
                                 	
                                     clearScreen();
@@ -90,7 +119,7 @@ public class Main {
                                     }
                                     break;
                                 }
-                                case 3 -> {
+                                case '3' -> {
                                 	double amount;
                                 	
                                     clearScreen();
@@ -112,7 +141,7 @@ public class Main {
                                         else {clearScreen(); System.out.println("Invalid Input!!");}
                                     }
                                 }
-                                case 4 -> {
+                                case '4' -> {
                                 	long account_num;
                                 	double amount;
 
@@ -156,18 +185,11 @@ public class Main {
                                     	} 
                                     }
                                 }
-                                case 5 -> {
-                                    clearScreen();
-                                    System.out.println("=".repeat(60));
-                                    System.out.println("Your History:");
-                                    ArrayList <String> histories = current_acc.getHistory();
-                                    for (String history : histories) {
-                                        System.out.println(" - " + history);
-                                    }
-                                    System.out.println("=".repeat(60));
+                                case '5' -> {
+                                    historyDisplay(current_acc.getHistory());
                                     break;
                                 }
-                                case 6 -> {
+                                case '6' -> {
                                     clearScreen();
                                     System.out.println("Logged out!!");
                                     System.out.println("=".repeat(30));
@@ -184,7 +206,7 @@ public class Main {
                     }
                     break;
                 }
-                case 3 -> {
+                case '3' -> {
                     clearScreen();
                     System.out.println("Goodbye!!");
                     input.close();
