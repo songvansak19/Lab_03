@@ -24,9 +24,13 @@ public class BankService {
         String str;
 
         clearScreen(); 
-        System.out.print("Enter your name (Enter 'q' to go back): ");
-        name = input.nextLine();
-        if (name.equals("q") || name.equals("Q")) {clearScreen(); return;}
+        while (true) {
+        	System.out.print("Enter your name (Enter 'q' to go back): ");
+        	name = input.nextLine();
+        	if (name.equals("q") || name.equals("Q")) {clearScreen(); return;}
+        	else if (name.trim().isEmpty()) {clearScreen(); System.out.println("Empty Input!\n" + "=".repeat(30));}
+        	else break;
+        }
         
         clearScreen();
         while (true) {
@@ -35,6 +39,7 @@ public class BankService {
             accountNumber = longCheck(str);
             if (str.equals("q") || str.equals("Q")) {clearScreen(); return;}
             else if (accountNumber != 0) break;
+            else {clearScreen(); System.out.println("Invalid Input!\n" + "=".repeat(30));}
         }
         
         if (accountRepo.findAccountNumber(accountNumber) || accountRepo.findName(name)) {
@@ -45,9 +50,13 @@ public class BankService {
         }
 
         clearScreen();
-        System.out.print("Enter New password (Enter 'q' to go back): ");
-        password = input.nextLine();
-        if (password.equals("q") || password.equals("Q")) {clearScreen(); return;}
+        while (true) {        	
+        	System.out.print("Enter New password (Enter 'q' to go back): ");
+        	password = input.nextLine();
+        	if (password.equals("q") || password.equals("Q")) {clearScreen(); return;}
+        	else if (password.trim().isEmpty()) {clearScreen(); System.out.println("Empty Input!\n" + "=".repeat(30));}
+        	else break;
+        }
 
         clearScreen();
         while (true) { 
@@ -57,6 +66,8 @@ public class BankService {
             if (str.equals("0")) break;
             else if (str.equals("q") || str.equals("Q")) {clearScreen(); return;}
             if (balance < 0 || balance > 10e6) {clearScreen(); System.out.println("Invalid Amount!\n" + "=".repeat(30));}
+            else if (balance == 0) {clearScreen(); System.out.println("Invalid Input!\n" + "=".repeat(30));}
+            else break;
         }
         
         accountRepo.addNew(new Account(name, accountNumber, password, balance, currentTime));
@@ -77,12 +88,17 @@ public class BankService {
             accountNumber = longCheck(str);
             if (str.equals("q") || str.equals("Q")) {clearScreen(); return null;}
             else if (accountNumber != 0) break;
+            else {clearScreen(); System.out.println("Invalid Input!\n" + "=".repeat(30));}
         }
 
         clearScreen();
-        System.out.print("Enter your password (Enter 'q' to go back): ");
-        password = input.nextLine();
-        if (password.equals("q") || password.equals("Q")) {clearScreen(); return null;}
+        while (true) {        	
+        	System.out.print("Enter your password (Enter 'q' to go back): ");
+        	password = input.nextLine();
+        	if (password.equals("q") || password.equals("Q")) {clearScreen(); return null;}
+        	else if (password.trim().isEmpty()) {clearScreen(); System.out.println("Empty Input!\n" + "=".repeat(30));}
+        	else break;
+        }
 
         Account account = accountRepo.getAccount(accountNumber, password);
         if (account != null) return account;
