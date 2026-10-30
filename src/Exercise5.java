@@ -6,10 +6,10 @@ import java.util.Scanner;
 public class Exercise5 {
 	public static class Account { // This is a individual user account 'Class'.
 	    private String name;
-	    private int account_num;
+	    private long account_num;
 	    private double balance;
 
-	    public Account(String name, int account_num, double balance) {
+	    public Account(String name, long account_num, double balance) {
 	        this.name = name;
 	        this.account_num = account_num;
 	        this.balance = balance;
@@ -31,7 +31,7 @@ public class Exercise5 {
 	        return false;
 	    }
 
-	    public int getAccountNumber() {
+	    public long getAccountNumber() {
 	        return account_num;
 	    }
 
@@ -46,51 +46,108 @@ public class Exercise5 {
 	
 	public static class AuthService { // This is AUthentication Service.
 	    private ArrayList <Account> accounts = new ArrayList<>();
-	    public AuthService(ArrayList <Account> accounts) {
+	    private Scanner input;
+	    public AuthService(ArrayList <Account> accounts, Scanner input) {
 	        this.accounts = accounts;
+	        this.input = input;
 	    }
 
-		public Account Authenticate(String name, int account_num) {
+		public Account Authenticate(long account_num) {
 	        for (Account account : accounts) {
-	            if (account.getAccountNumber() == account_num && account.getName().equals(name)) {
+	            if (account.getAccountNumber() == account_num) {
 	                return account;
 	            }
 	        }
 	        return null;
 	    }
-	    public void SignIn(ArrayList <Account> account) {
+		
+	    public void Register(ArrayList <Account> account) {
 	        clearScreen();
-	        Scanner input = new Scanner(System.in);
-	        System.out.print("Enter your name: ");
-	        String name = input.nextLine();
-	        System.out.print("Enter your Account Number: ");
-	        int account_num = input.nextInt();
-	        System.out.print("Enter your Balance: ");
-	        double balance = input.nextDouble();
-	        account.add(new Account(name, account_num, balance));
+	        String name;
+	        String str;
+	        Long account_num;
+	        double balance;
+	        
+	        input.nextLine();
+	        while (true) {
+	        	System.out.print("Enter your name: ");
+	        	name = input.nextLine();
+	        	if (name.trim().isEmpty()) {
+	        		clearScreen();
+	        		System.out.println("Invalid Name!");
+	        		System.out.println("=".repeat(30));
+	        	} else break;
+	        }
+	        
+	        while (true) {
+	        	System.out.print("Enter your Account Number: ");
+	        	str = input.nextLine();
+	        	
+	        	if (str.length() == 14 && LongParse(str)) {
+	        		account_num = Long.parseLong(str);
+	        		break;
+	        	} else {
+	        		clearScreen();
+	        		System.out.println("Invalid Input!");
+	        		System.out.println("=".repeat(30));
+	        	}
+	        }
+	        	
+	        while (true) {
+	        	System.out.print("Enter your Balance: ");
+	        	str = input.nextLine();
+	        	if (DoubleParse(str)) {
+	        		balance = Double.parseDouble(str);
+	        		if (balance >= 0 && balance <= 10e6) break;
+	        		else {
+	        			clearScreen();
+		        		System.out.println("Invlaid Amount!");
+		        		System.out.println("=".repeat(30));
+	        		}
+	        	}
+	        	else {
+	        		clearScreen();
+	        		System.out.println("Invlaid Input!");
+	        		System.out.println("=".repeat(30));
+	        	}
+	        }
+	        	
+        	account.add(new Account(name, account_num, balance));
 	        clearScreen();
 	        System.out.println("Please log in to your account!");
 	        System.out.println("=".repeat(30));
 	    }
+	    
 	    public Account LogIn(ArrayList <Account> accounts) {
 	        clearScreen();
-
-	        Scanner input = new Scanner(System.in);
-	        System.out.print("Enter your name: ");
-	        String name = input.nextLine();
-	        System.out.print("Enter your Account Number: ");
-	        int account_number = input.nextInt();
-
-	        Account account = Authenticate(name, account_number);
-
-	        if (account == null) {
-	            clearScreen();
-	            System.out.println("Sorry! Invalid name or account number!");
-	            System.out.println("=".repeat(30));
-	        } else {
-	            return account;
-	        }
+	        input.nextLine();
+	        String str;
+	        long account_number;	
+	        
+        	System.out.print("Enter your Account Number: ");
+        	str = input.nextLine();
+        	if (LongParse(str)) {	        		
+        		account_number = Long.parseLong(str);
+        		for (Account account : accounts) {
+        			if (account.getAccountNumber() == account_number) return Authenticate(account.getAccountNumber());
+        		}
+        	}
+        	clearScreen();
+        	System.out.println("Sorry! Invalid account number or input!");
+        	System.out.println("=".repeat(30));
 	        return null;
+	    }
+	    
+	    public boolean LongParse(String str) {
+	    	try {Long.parseLong(str);} 
+	    	catch (Exception e) {return false;}
+	    	return true;
+	    }
+	    
+	    public boolean DoubleParse(String str) {
+	    	try {Double.parseDouble(str);} 
+	    	catch (Exception e) {return false;}
+	    	return true;
 	    }
 	}
 
@@ -100,9 +157,10 @@ public class Exercise5 {
 
     public static void main(String[] args) { // Main class, where all the code run.
 
+    	Scanner input = new Scanner(System.in);
         ArrayList <Account> accounts = new ArrayList<>();
         Account current_acc;
-        AuthService authService = new AuthService(accounts);
+        AuthService authService = new AuthService(accounts, input);
 
         while (true) { 
             System.out.println("Enter an option below: ");
@@ -110,12 +168,11 @@ public class Exercise5 {
             System.out.println("2 - Log in");
             System.out.println("3 - Exit");
             System.out.print("Your Option: ");
-            Scanner input = new Scanner(System.in);
             int option = input.nextInt();
             switch (option) {
-                case 1 -> SignIn(accounts);
+                case 1 -> authService.Register(accounts);
                 case 2 -> {
-                    current_acc = LogIn(accounts);
+                    current_acc = authService.LogIn(accounts);
                     if (current_acc != null) {
                         input.nextLine();
                         clearScreen();
@@ -161,10 +218,11 @@ public class Exercise5 {
                                 case 3 -> {
                                     clearScreen();
                                     while (true) {
+                                    	double amount;
                                         System.out.println("=".repeat(30));
                                         System.out.println("Your Balance: " + current_acc.getBalance());
                                         System.out.print("Enter Amount to Deposit: ");
-                                        double amount = input.nextDouble();
+                                        amount = input.nextDouble();
                                         if (current_acc.Deposit(amount)) {
                                             clearScreen();
                                             System.out.println("Deposit Successful!!");
