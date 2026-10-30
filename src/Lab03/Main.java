@@ -42,27 +42,41 @@ public class Main {
 
     		System.out.println("=".repeat(60));
     		System.out.println("Your History:");
-    		for (int i = histories.size() - 1 - num; i > histories.size() - 6 - num; i --) {
-    			if (i >= 0 && num <= histories.size() - 5) {
-    				System.out.println(" - " + histories.get(i));
-    			}
-    		}
-    		System.out.println("=".repeat(60));
-    		System.out.println("Press 'q' to go back | press 'w/s' to navigate");
     		
-    		key = (char) readKey();
-    		if (key == 'w') {
-    			clearScreen();
-    			num -= 1;
-				if (num < 0) num = 0;
+    		if (histories.size() <= 5) {
+    			for (String history : histories) {
+    				System.out.println(" - " + history);
+    			}
+    			System.out.println("=".repeat(60));
+    			System.out.println("Press 'q' to go back | press 'w/s' to navigate");
+    			
+    			key = (char) readKey();
+    			if (key == 'q') {clearScreen(); break;}
+    			else clearScreen();
+    		} else {
+    			for (int i = histories.size() - 1 - num; i > histories.size() - 6 - num; i --) {
+    				if (i >= 0 && num <= histories.size() - 5) {
+    					System.out.println(" - " + histories.get(i));
+    				}
+    			}
+    			System.out.println("=".repeat(60));
+    			System.out.println("Press 'q' to go back | press 'w/s' to navigate");
+    			
+    			key = (char) readKey();
+    			if (key == 'w') {
+    				clearScreen();
+    				num -= 1;
+    				if (num < 0) num = 0;
+    			}
+    			else if (key == 's') {
+    				clearScreen();
+    				num += 1;
+    				if (num > histories.size() - 6) num = histories.size() - 5;
+    			}
+    			if (key == 'q') {clearScreen(); break;}
+    			else clearScreen();
     		}
-    		else if (key == 's') {
-				clearScreen();
-				num += 1;
-				if (num > histories.size() - 6) num = histories.size() - 5;
-			}
-    		else if (key == 'q') {clearScreen(); break;}
-    		else clearScreen();
+    		
     	}
     }
 
