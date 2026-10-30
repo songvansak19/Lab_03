@@ -58,6 +58,7 @@ public class Exercise1 {
         }
         System.out.println("=".repeat(30));
         System.out.printf("+ Average Price: %f", (avg / books.size()));
-        System.out.println("\n=".repeat(30));
+        System.out.println();
+        System.out.println("=".repeat(30));
     }
 }

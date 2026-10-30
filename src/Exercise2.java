@@ -34,6 +34,7 @@ public class Exercise2 {
             System.out.println("+ City " + i + ": ");
             System.out.println("Celsius: " + temp.C);
             System.out.println("Fahrenheit: " + temp.F + "\n");
+            i ++;
         }
         System.out.println("=".repeat(30));
     }
