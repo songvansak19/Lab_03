@@ -1,7 +1,5 @@
 # Lab 03: Pseudocode
 
-This guide describes the current behavior of the five Java source files in `src`. For the editable flowcharts, open [Lab_03_Flowcharts.drawio](C:\School\Lab_03\Lab\Lab_03_Flowcharts.drawio); its first page explains the flowchart symbols.
-
 ## Exercise1.java — Book list and average price
 
 
@@ -52,7 +50,6 @@ START
     FOR each temperature in the list
         Fahrenheit = Celsius * 9 / 5 + 32
         Print cityNumber, Celsius, and Fahrenheit
-        // The current Java code does not increase cityNumber.
     END FOR
 END
 ```
@@ -116,12 +113,9 @@ START
         END FOR
         average = sum / number of subjects
         Print reportNumber, student ID, name, total, average, and each mark with its grade
-        // The current Java code prints reportNumber + 1 and does not increase reportNumber.
     END FOR
 END
 ```
-
-**Current-code note:** The marks array is created once before the student input loop and reused for every student. Each student therefore refers to the same array, which contains the last student's entered marks after input finishes. The report label is also always `Student 2` because the display counter starts at one, is printed plus one, and is never increased.
 
 ## Exercise5.java — Account registration and banking menu
 
@@ -221,5 +215,3 @@ MAIN
     END REPEAT
 END MAIN
 ```
-
-**Current-code note:** Accounts are kept in memory only. Although `Users.json` exists in the project folder, this Java file does not read from or write to it. The account number is checked for length and numeric form during registration, but the code does not check whether that number is already registered.
