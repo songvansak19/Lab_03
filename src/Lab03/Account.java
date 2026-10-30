@@ -21,7 +21,7 @@ public class Account { // This is a individual user account 'Class'.
         this.password = password;
         this.balance = balance;
         history.add("Account Creation Date: " + currentTime);
-        history.add("Initial Balance: " + this.balance + "\n");
+        history.add("Initial Balance: " + this.balance);
     }
 
     public boolean Deposit(double amount,String currentTime) {

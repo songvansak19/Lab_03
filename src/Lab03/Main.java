@@ -34,14 +34,36 @@ public class Main {
         }
     }
     
-    public static void historyDisplay(ArrayList <String> histories) {
+    public static void historyDisplay(ArrayList <String> histories) throws IOException {
     	clearScreen();
-        System.out.println("=".repeat(60));
-        System.out.println("Your History:");
-        for (String history : histories) {
-            System.out.println(" - " + history);
-        }
-        System.out.println("=".repeat(60));
+    	int num = 0;
+    	while (true) {   
+    		int key;
+
+    		System.out.println("=".repeat(60));
+    		System.out.println("Your History:");
+    		for (int i = histories.size() - 1 - num; i > histories.size() - 6 - num; i --) {
+    			if (i >= 0 && num <= histories.size() - 5) {
+    				System.out.println(" - " + histories.get(i));
+    			}
+    		}
+    		System.out.println("=".repeat(60));
+    		System.out.println("Press 'q' to go back | press 'w/s' to navigate");
+    		
+    		key = (char) readKey();
+    		if (key == 'w') {
+    			clearScreen();
+    			num -= 1;
+				if (num < 0) num = 0;
+    		}
+    		else if (key == 's') {
+				clearScreen();
+				num += 1;
+				if (num > histories.size() - 6) num = histories.size() - 5;
+			}
+    		else if (key == 'q') {clearScreen(); break;}
+    		else clearScreen();
+    	}
     }
 
     public static void main(String[] args) throws IOException {
