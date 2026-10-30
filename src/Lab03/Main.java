@@ -37,7 +37,7 @@ public class Main {
     public static void historyDisplay(ArrayList <String> histories) throws IOException {
     	clearScreen();
     	int num = 0;
-    	while (true) {   
+    	while (true) {
     		int key;
 
     		System.out.println("=".repeat(60));
