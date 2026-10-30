@@ -4,52 +4,105 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 public class Exercise5 {
-    public static void SignIn(ArrayList <Account> account) {
-        clearScreen();
-        Scanner input = new Scanner(System.in);
-        System.out.print("Enter your name: ");
-        String name = input.nextLine();
-        System.out.print("Enter your Account Number: ");
-        int account_num = input.nextInt();
-        System.out.print("Enter your Balance: ");
-        double balance = input.nextDouble();
-        account.add(new Account(name, account_num, balance));
-        clearScreen();
-        System.out.println("Please log in to your account!");
-        System.out.println("=".repeat(30));
-    }
+	public static class Account { // This is a individual user account 'Class'.
+	    private String name;
+	    private int account_num;
+	    private double balance;
 
-    public static Account LogIn(ArrayList <Account> accounts) {
-        clearScreen();
+	    public Account(String name, int account_num, double balance) {
+	        this.name = name;
+	        this.account_num = account_num;
+	        this.balance = balance;
+	    }
 
-        AuthService authService = new AuthService(accounts);
+	    public boolean Deposit(double amount) {
+	        if (amount > 0) {
+	            balance += amount;
+	            return true;
+	        }
+	        return false;
+	    }
 
-        Scanner input = new Scanner(System.in);
-        System.out.print("Enter your name: ");
-        String name = input.nextLine();
-        System.out.print("Enter your Account Number: ");
-        int account_number = input.nextInt();
+	    public boolean Withdraw(double amount) {
+	        if (amount > 0 && amount <= balance) {
+	            balance -= amount;
+	            return true;
+	        }
+	        return false;
+	    }
 
-        Account account = authService.Authenticate(name, account_number);
+	    public int getAccountNumber() {
+	        return account_num;
+	    }
 
-        if (account == null) {
-            clearScreen();
-            System.out.println("Sorry! Invalid name or account number!");
-            System.out.println("=".repeat(30));
-        } else {
-            return account;
-        }
-        return null;
-    }
+	    public String getName() {
+	        return name;
+	    }
+
+	    public double getBalance() {
+	        return balance;
+	    }
+	}
+	
+	public static class AuthService { // This is AUthentication Service.
+	    private ArrayList <Account> accounts = new ArrayList<>();
+	    public AuthService(ArrayList <Account> accounts) {
+	        this.accounts = accounts;
+	    }
+
+		public Account Authenticate(String name, int account_num) {
+	        for (Account account : accounts) {
+	            if (account.getAccountNumber() == account_num && account.getName().equals(name)) {
+	                return account;
+	            }
+	        }
+	        return null;
+	    }
+	    public void SignIn(ArrayList <Account> account) {
+	        clearScreen();
+	        Scanner input = new Scanner(System.in);
+	        System.out.print("Enter your name: ");
+	        String name = input.nextLine();
+	        System.out.print("Enter your Account Number: ");
+	        int account_num = input.nextInt();
+	        System.out.print("Enter your Balance: ");
+	        double balance = input.nextDouble();
+	        account.add(new Account(name, account_num, balance));
+	        clearScreen();
+	        System.out.println("Please log in to your account!");
+	        System.out.println("=".repeat(30));
+	    }
+	    public Account LogIn(ArrayList <Account> accounts) {
+	        clearScreen();
+
+	        Scanner input = new Scanner(System.in);
+	        System.out.print("Enter your name: ");
+	        String name = input.nextLine();
+	        System.out.print("Enter your Account Number: ");
+	        int account_number = input.nextInt();
+
+	        Account account = Authenticate(name, account_number);
+
+	        if (account == null) {
+	            clearScreen();
+	            System.out.println("Sorry! Invalid name or account number!");
+	            System.out.println("=".repeat(30));
+	        } else {
+	            return account;
+	        }
+	        return null;
+	    }
+	}
 
     public static void clearScreen() {
         System.out.println("\033[H\033[2J");
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) { // Main class, where all the code run.
 
         ArrayList <Account> accounts = new ArrayList<>();
         Account current_acc;
+        AuthService authService = new AuthService(accounts);
 
         while (true) { 
             System.out.println("Enter an option below: ");
