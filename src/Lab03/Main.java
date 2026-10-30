@@ -205,7 +205,7 @@ public class Main {
                                     	amount = bankService.doubleCheck(str);
                                     	if (str.equals("q") || str.equals("Q")) {clearScreen(); break;}
                                     	else { 
-                                    		if (amount == 0) {clearScreen(); System.out.println("Invalid Input!\n" + "=".repeat(30));}
+                                    		if (amount <= 0) {clearScreen(); System.out.println("Invalid Input!\n" + "=".repeat(30));}
                                     		else {                                    			
                                     			if (bankService.Transfer(current_acc, account_num, amount, getCurrentTime())) {
                                     				clearScreen();

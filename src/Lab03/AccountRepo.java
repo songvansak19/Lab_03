@@ -78,8 +78,8 @@ public class AccountRepo {
         for (JsonElement element : accounts) {
             JsonObject obj = element.getAsJsonObject();
             if (obj.get("account_num").getAsLong() == current_acc.getAccountNumber()) {
-                obj.add("history", gson.toJsonTree(current_acc.getHistory()));
-                obj.add("balance", gson.toJsonTree(current_acc.getBalance()));
+            	obj.add("history", gson.toJsonTree(current_acc.getHistory()));
+            	obj.add("balance", gson.toJsonTree(current_acc.getBalance()));
                 break;
             }
         }
