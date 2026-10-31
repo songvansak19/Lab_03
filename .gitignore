@@ -8,5 +8,9 @@ bin/
 .settings/
 .metadata/
 
+# IntelliJ IDEA local configuration
+.idea/
+*.iml
+
 # Database
 Users.json
