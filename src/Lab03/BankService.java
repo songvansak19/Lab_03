@@ -5,9 +5,9 @@ import java.util.Scanner;
 
 public class BankService {
 
-    private Scanner input;
-    private Path path = Path.of("Users.json");
-    private AccountRepo accountRepo = new AccountRepo(path);
+    private final Scanner input;
+    private final Path path = Path.of("Users.json");
+    private final AccountRepo accountRepo = new AccountRepo(path);
 
     public BankService(Scanner input) {
         this.input = input;
@@ -70,7 +70,7 @@ public class BankService {
             else break;
         }
         
-        accountRepo.addNew(new Account(name, accountNumber, password, balance, currentTime));
+        accountRepo.addNew(new Account(name, accountNumber, balance, currentTime));
 
         clearScreen();
         System.out.println("Please log in to your account!");
@@ -123,14 +123,13 @@ public class BankService {
         return false;
     }
 
-    public boolean Transfer(Account current_acc, long account_num, double amount, String currentTime) {
-        Account accountA = current_acc;
+    public boolean Transfer(Account accountA, long account_num, double amount, String currentTime) {
         if (account_num != accountA.getAccountNumber() && accountRepo.findAccountNumber(account_num)) { // Transfer from Account A (You)
             Account accountB = accountRepo.getAccount(account_num); // The receiver (Account B)
             if (accountA.Transfer(accountB.getName(), account_num, amount, currentTime)) {
                 accountRepo.update(accountA); // Update Account A Transaction history and Current balance.
 
-                accountB.Receive(current_acc.getName(), current_acc.getAccountNumber(), amount, currentTime);
+                accountB.Receive(accountA.getName(), accountA.getAccountNumber(), amount, currentTime);
                 accountRepo.update(accountB); // Update Account B Transaction history and Current balance.
                 return true;
             }
@@ -140,8 +139,7 @@ public class BankService {
 
     public long longCheck(String str) {
         try {
-            long num = Long.parseLong(str);
-            return num;
+            return Long.parseLong(str);
         } catch (Exception e) {
             return 0;
         }
@@ -149,8 +147,7 @@ public class BankService {
 
     public double doubleCheck(String str) {
         try {
-            double num = Double.parseDouble(str);
-            return num;
+            return Double.parseDouble(str);
         } catch (Exception e) {
             clearScreen();
             return 0;

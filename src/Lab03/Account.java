@@ -2,23 +2,20 @@ package Lab03;
 
 import java.util.ArrayList;
 
-public class Account { // This is a individual user account 'Class'.
+public class Account { // This is an individual user account 'Class'.
 
-    private String name;
-    private long account_num;
-    private String password;
+    private final String name;
+    private final long account_num;
     private double balance;
-    private ArrayList <String> history = new ArrayList<>();
+    private final ArrayList <String> history = new ArrayList<>();
     
     public Account(String name,
         long account_num,
-        String password,
         double balance,
         String currentTime
     ) {
         this.name = name;
         this.account_num = account_num;
-        this.password = password;
         this.balance = balance;
         history.add("Account Creation Date: " + currentTime);
         history.add("Initial Balance: " + this.balance);
@@ -70,10 +67,6 @@ public class Account { // This is a individual user account 'Class'.
 
     public double getBalance() {
         return balance;
-    }
-
-    public String getPassword() {
-        return password;
     }
 
     public ArrayList <String> getHistory() {

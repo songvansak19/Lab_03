@@ -12,9 +12,9 @@ import com.google.gson.JsonParser;
 import java.nio.file.Files;
 
 public class AccountRepo {
-    private Path path;
+    private final Path path;
     private JsonArray accounts = new JsonArray();
-    private Gson gson = new GsonBuilder().setPrettyPrinting().create();
+    private final Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
     public AccountRepo(Path path) {
         this.path = path;

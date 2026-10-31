@@ -20,7 +20,7 @@ public class Main {
     public static void clearScreen() {
         System.out.println("\033[H\033[2J");
     }
-    
+
     static int readKey() throws IOException {
         try (Terminal terminal = TerminalBuilder.builder()
                 .system(true)
@@ -33,7 +33,7 @@ public class Main {
             }
         }
     }
-    
+
     public static void historyDisplay(ArrayList <String> histories) throws IOException {
     	clearScreen();
     	int num = 0;
@@ -42,18 +42,16 @@ public class Main {
 
     		System.out.println("=".repeat(60));
     		System.out.println("Your History:");
-    		
+
     		if (histories.size() <= 5) {
     			for (String history : histories) {
     				System.out.println(" - " + history);
     			}
     			System.out.println("=".repeat(60));
     			System.out.println("Press 'q' to go back | press 'w/s' to navigate");
-    			
+
     			key = (char) readKey();
-    			if (key == 'q') {clearScreen(); break;}
-    			else clearScreen();
-    		} else {
+            } else {
     			for (int i = histories.size() - 1 - num; i > histories.size() - 6 - num; i --) {
     				if (i >= 0 && num <= histories.size() - 5) {
     					System.out.println(" - " + histories.get(i));
@@ -61,7 +59,7 @@ public class Main {
     			}
     			System.out.println("=".repeat(60));
     			System.out.println("Press 'q' to go back | press 'w/s' to navigate");
-    			
+
     			key = (char) readKey();
     			if (key == 'w') {
     				clearScreen();
@@ -73,24 +71,25 @@ public class Main {
     				num += 1;
     				if (num > histories.size() - 6) num = histories.size() - 5;
     			}
-    			if (key == 'q') {clearScreen(); break;}
-    			else clearScreen();
-    		}
-    		
-    	}
+            }
+            clearScreen();
+            if (key == 'q') {
+                break;}
+
+        }
     }
 
     public static void main(String[] args) throws IOException {
         Account current_acc;
         Scanner input = new Scanner(System.in);
         BankService bankService = new BankService(input);
-        
+
         String str;
         int key;
-        
+
         clearScreen();
         while (true) {
-            while (true) { 
+            while (true) {
                 System.out.println("Enter an option below: ");
                 System.out.println("1 - Sign in");
                 System.out.println("2 - Log in");
@@ -131,11 +130,10 @@ public class Main {
                                     System.out.println("=".repeat(30));
                                     System.out.println("Your Current Balance: " + current_acc.getBalance());
                                     System.out.println("=".repeat(30));
-                                    break;
                                 }
                                 case '2' -> {
                                 	double amount;
-                                	
+
                                     clearScreen();
                                     while (true) {
                                         System.out.println("=".repeat(30));
@@ -153,11 +151,10 @@ public class Main {
                                             } else {clearScreen(); System.out.println("Invalid Amount!");}
                                         } else {clearScreen();System.out.println("Invalid Input!");}
                                     }
-                                    break;
                                 }
                                 case '3' -> {
                                 	double amount;
-                                	
+
                                     clearScreen();
                                     while (true) {
                                         System.out.println("=".repeat(30));
@@ -194,9 +191,9 @@ public class Main {
                                         	} else break;
                                         }
                                     }
-                                    
+
                                     if (str.equals("q") || str.equals("Q")) break;
-                                    
+
                                     clearScreen();
                                     while (true) {
                                     	System.out.println("Your Balance: " + current_acc.getBalance());
@@ -204,9 +201,9 @@ public class Main {
                                     	str = input.nextLine();
                                     	amount = bankService.doubleCheck(str);
                                     	if (str.equals("q") || str.equals("Q")) {clearScreen(); break;}
-                                    	else { 
+                                    	else {
                                     		if (amount <= 0) {clearScreen(); System.out.println("Invalid Input!\n" + "=".repeat(30));}
-                                    		else {                                    			
+                                    		else {
                                     			if (bankService.Transfer(current_acc, account_num, amount, getCurrentTime())) {
                                     				clearScreen();
                                     				System.out.println("Transfer Successful!!");
@@ -217,20 +214,16 @@ public class Main {
                                     				System.out.println("Transfer Failed! Please Check the Input Again!\n" + "=".repeat(30));
                                     				break;
                                     			}
-                                    		} 
-                                    	} 
+                                    		}
+                                    	}
                                     }
                                 }
-                                case '5' -> {
-                                    historyDisplay(current_acc.getHistory());
-                                    break;
-                                }
+                                case '5' -> historyDisplay(current_acc.getHistory());
                                 case '6' -> {
                                     clearScreen();
                                     System.out.println("Logged out!!");
                                     System.out.println("=".repeat(30));
                                     running = false;
-                                    break;
                                 }
                                 default -> {
                                     clearScreen();
@@ -240,7 +233,6 @@ public class Main {
                             }
                         }
                     }
-                    break;
                 }
                 case '3' -> {
                     clearScreen();
