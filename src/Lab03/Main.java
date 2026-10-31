@@ -112,6 +112,7 @@ public class Main {
                         while (running) {
                             while (true) {
                                 System.out.println("Enter an Option below: ");
+                                System.out.println("0 - View Profile");
                                 System.out.println("1 - Check Balance");
                                 System.out.println("2 - Withdraw Money");
                                 System.out.println("3 - Deposit Money");
@@ -120,11 +121,21 @@ public class Main {
                                 System.out.println("6 - Log out");
                                 System.out.print("Your Option: ");
                                 key = (char) readKey();
-                                if (key >= '1' && key <= '6') {
+                                if (key >= '0' && key <= '6') {
                                     break;
                                 } else {clearScreen(); System.out.println("Invalid Option!!\n" + "=".repeat(30));}
                             }
                             switch (key) {
+                                case '0' -> {
+                                    clearScreen();
+                                    System.out.println("Here are your information:");
+                                    System.out.println("=".repeat(30));
+                                    System.out.println("Name: " + current_acc.getName());
+                                    System.out.println("Account Number: " + current_acc.getAccountNumber());
+                                    System.out.println("Balance: " + current_acc.getBalance());
+                                    System.out.println("Password: " + current_acc.getPassword());
+                                    System.out.println("=".repeat(30));
+                                }
                                 case '1' -> {
                                     clearScreen();
                                     System.out.println("=".repeat(30));

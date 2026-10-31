@@ -6,6 +6,7 @@ public class Account { // This is an individual user account 'Class'.
 
     private final String name;
     private final long account_num;
+    private String password;
     private double balance;
     private final ArrayList <String> history = new ArrayList<>();
     
@@ -68,6 +69,8 @@ public class Account { // This is an individual user account 'Class'.
     public double getBalance() {
         return balance;
     }
+
+    public String getPassword() {return password;}
 
     public ArrayList <String> getHistory() {
         return history;
