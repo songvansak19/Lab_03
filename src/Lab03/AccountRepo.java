@@ -80,6 +80,8 @@ public class AccountRepo {
             if (obj.get("account_num").getAsLong() == current_acc.getAccountNumber()) {
             	obj.add("history", gson.toJsonTree(current_acc.getHistory()));
             	obj.add("balance", gson.toJsonTree(current_acc.getBalance()));
+                obj.addProperty("name", current_acc.getName());
+                obj.addProperty("password", current_acc.getPassword());
                 break;
             }
         }

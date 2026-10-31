@@ -73,9 +73,7 @@ public class Main {
     			}
             }
             clearScreen();
-            if (key == 'q') {
-                break;}
-
+            if (key == 'q') break;
         }
     }
 
@@ -128,13 +126,66 @@ public class Main {
                             switch (key) {
                                 case '0' -> {
                                     clearScreen();
-                                    System.out.println("Here are your information:");
-                                    System.out.println("=".repeat(30));
-                                    System.out.println("Name: " + current_acc.getName());
-                                    System.out.println("Account Number: " + current_acc.getAccountNumber());
-                                    System.out.println("Balance: " + current_acc.getBalance());
-                                    System.out.println("Password: " + current_acc.getPassword());
-                                    System.out.println("=".repeat(30));
+                                    while (true) {
+                                        System.out.println("Here are your information:");
+                                        System.out.println("=".repeat(30));
+                                        System.out.println("Name: " + current_acc.getName());
+                                        System.out.println("Account Number: " + current_acc.getAccountNumber());
+                                        System.out.println("Balance: " + current_acc.getBalance());
+                                        System.out.println("Password: " + current_acc.getPassword());
+                                        System.out.println("=".repeat(30));
+                                        System.out.println("1 - Change Name");
+                                        System.out.println("2 - Change Password");
+                                        System.out.println("3 - Go back");
+                                        System.out.print("Your Option: ");
+                                        key = (char) readKey();
+                                        switch (key) {
+                                            case '1' -> {
+                                                clearScreen();
+                                                System.out.print("Enter Your New Name (Enter 'q' to Go back): ");
+                                                str = input.nextLine();
+                                                if (str.equals("q") || str.equals("Q")) break;
+
+                                                bankService.changeName(current_acc, str);
+
+                                                clearScreen();
+                                                System.out.println("Your new name has been changed!");
+                                                System.out.println("=".repeat(30));
+                                            }
+                                            case '2' -> {
+                                                clearScreen();
+                                                while  (true) {
+                                                    System.out.print("Enter Your Current Password (Enter 'q' to Go back): ");
+                                                    str = input.nextLine();
+                                                    if  (str.equals("q") || str.equals("Q")) break;
+                                                    else if (current_acc.getPassword().equals(str)) break;
+                                                    else {
+                                                        clearScreen();
+                                                        System.out.println("Incorrect Password!!!");
+                                                        System.out.println("=".repeat(30));
+                                                    }
+                                                }
+
+                                                if (str.equals("q") || str.equals("Q")) break;
+
+                                                clearScreen();
+                                                System.out.println("Please Enter yourNew Password (Enter 'q' to Go back): ");
+                                                str = input.nextLine();
+
+                                                if (str.equals("q") || str.equals("Q")) break;
+
+                                                bankService.changePassword(current_acc, str);
+
+                                                clearScreen();
+                                                System.out.println("Your current password has been changed!");
+                                                System.out.println("=".repeat(30));
+                                            }
+                                            case '3' -> {clearScreen();}
+                                            default -> System.out.println("Invalid Option!!\n" + "=".repeat(30));
+                                        }
+                                        clearScreen();
+                                        break;
+                                    }
                                 }
                                 case '1' -> {
                                     clearScreen();
@@ -186,20 +237,22 @@ public class Main {
                                     }
                                 }
                                 case '4' -> {
-                                	long account_num;
-                                	double amount;
+                                    long account_num;
+                                    double amount;
 
                                     clearScreen();
                                     while (true) {
                                         System.out.print("Enter Receiver Account Number (Enter 'q' to go back): ");
                                         str = input.nextLine();
                                         account_num = bankService.longCheck(str);
-                                        if (str.equals("q") || str.equals("Q")) {clearScreen(); break;}
-                                        else {
-                                        	if (account_num == 0) {
-                                        		clearScreen();
-                                        		System.out.println("Invalid Input!\n" + "=".repeat(30));
-                                        	} else break;
+                                        if (str.equals("q") || str.equals("Q")) {
+                                            clearScreen();
+                                            break;
+                                        } else {
+                                            if (account_num == 0) {
+                                                clearScreen();
+                                                System.out.println("Invalid Input!\n" + "=".repeat(30));
+                                            } else break;
                                         }
                                     }
 
@@ -207,26 +260,39 @@ public class Main {
 
                                     clearScreen();
                                     while (true) {
-                                    	System.out.println("Your Balance: " + current_acc.getBalance());
-                                    	System.out.print("Enter Amount to Transfer (Enter 'q' to Exit): ");
-                                    	str = input.nextLine();
-                                    	amount = bankService.doubleCheck(str);
-                                    	if (str.equals("q") || str.equals("Q")) {clearScreen(); break;}
-                                    	else {
-                                    		if (amount <= 0) {clearScreen(); System.out.println("Invalid Input!\n" + "=".repeat(30));}
-                                    		else {
-                                    			if (bankService.Transfer(current_acc, account_num, amount, getCurrentTime())) {
-                                    				clearScreen();
-                                    				System.out.println("Transfer Successful!!");
-                                    				System.out.println("=".repeat(30));
-                                    				break;
-                                    			} else {
-                                    				clearScreen();
-                                    				System.out.println("Transfer Failed! Please Check the Input Again!\n" + "=".repeat(30));
-                                    				break;
-                                    			}
-                                    		}
-                                    	}
+                                        System.out.println("Your Balance: " + current_acc.getBalance());
+                                        System.out.print("Enter Amount to Transfer (Enter 'q' to Exit): ");
+                                        str = input.nextLine();
+                                        amount = bankService.doubleCheck(str);
+                                        if (str.equals("q") || str.equals("Q")) {
+                                            clearScreen();
+                                            break;
+                                        } else {
+                                            if (amount <= 0) {
+                                                clearScreen();
+                                                System.out.println("Invalid Input!\n" + "=".repeat(30));
+                                            } else {
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                    if (str.equals("q") || str.equals("Q")) break;
+
+                                    if (bankService.Transfer(current_acc, account_num, amount, getCurrentTime())) {
+                                        clearScreen();
+                                        System.out.println("Transaction Confirmation:");
+                                        System.out.println("=".repeat(30));
+                                        System.out.println("Receiver Account Number: " + account_num);
+                                        System.out.println("Transfer Amount: " + amount);
+                                        System.out.println("=".repeat(30));
+                                        System.out.print("Press 'Enter' to confirm...");
+                                        input.nextLine();
+                                        clearScreen();
+                                    } else {
+                                        clearScreen();
+                                        System.out.println("Transfer Unsuccessful!! Please Try Again!");
+                                        System.out.println("=".repeat(30));
                                     }
                                 }
                                 case '5' -> historyDisplay(current_acc.getHistory());

@@ -137,6 +137,16 @@ public class BankService {
         return false;
     }
 
+    public void changeName(Account account, String new_name) {
+        account.changeName(new_name);
+        accountRepo.update(account);
+    }
+
+    public void changePassword(Account account, String new_password) {
+        account.changePassword(new_password);
+        accountRepo.update(account);
+    }
+
     public long longCheck(String str) {
         try {
             return Long.parseLong(str);

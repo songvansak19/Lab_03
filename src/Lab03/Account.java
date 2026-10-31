@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 public class Account { // This is an individual user account 'Class'.
 
-    private final String name;
+    private String name;
     private final long account_num;
     private String password;
     private double balance;
@@ -71,6 +71,12 @@ public class Account { // This is an individual user account 'Class'.
     }
 
     public String getPassword() {return password;}
+
+    public void changeName(String new_name) {
+        name = new_name;
+    }
+
+    public void changePassword(String new_password) {password = new_password;}
 
     public ArrayList <String> getHistory() {
         return history;
