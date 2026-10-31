@@ -169,7 +169,7 @@ public class Main {
                                                 if (str.equals("q") || str.equals("Q")) break;
 
                                                 clearScreen();
-                                                System.out.println("Please Enter yourNew Password (Enter 'q' to Go back): ");
+                                                System.out.print("Please Enter yourNew Password (Enter 'q' to Go back): ");
                                                 str = input.nextLine();
 
                                                 if (str.equals("q") || str.equals("Q")) break;
