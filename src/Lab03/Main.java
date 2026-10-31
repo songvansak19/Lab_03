@@ -11,7 +11,7 @@ import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 
 public class Main {
-	static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyy-MM-dd | HH:mm");
+    static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd | HH:mm");
 
     public static String getCurrentTime() {
         return LocalDateTime.now().format(formatter);
@@ -34,43 +34,42 @@ public class Main {
         }
     }
 
-    public static void historyDisplay(ArrayList <String> histories) throws IOException {
-    	clearScreen();
-    	int num = 0;
-    	while (true) {
-    		int key;
+    public static void historyDisplay(ArrayList<String> histories) throws IOException {
+        clearScreen();
+        int num = 0;
+        while (true) {
+            int key;
 
-    		System.out.println("=".repeat(60));
-    		System.out.println("Your History:");
+            System.out.println("=".repeat(60));
+            System.out.println("Your History:");
 
-    		if (histories.size() <= 5) {
-    			for (String history : histories) {
-    				System.out.println(" - " + history);
-    			}
-    			System.out.println("=".repeat(60));
-    			System.out.println("Press 'q' to go back | press 'w/s' to navigate");
+            if (histories.size() <= 5) {
+                for (String history : histories) {
+                    System.out.println(" - " + history);
+                }
+                System.out.println("=".repeat(60));
+                System.out.println("Press 'q' to go back | press 'w/s' to navigate");
 
-    			key = (char) readKey();
+                key = (char) readKey();
             } else {
-    			for (int i = histories.size() - 1 - num; i > histories.size() - 6 - num; i --) {
-    				if (i >= 0 && num <= histories.size() - 5) {
-    					System.out.println(" - " + histories.get(i));
-    				}
-    			}
-    			System.out.println("=".repeat(60));
-    			System.out.println("Press 'q' to go back | press 'w/s' to navigate");
+                for (int i = histories.size() - 1 - num; i > histories.size() - 6 - num; i--) {
+                    if (i >= 0 && num <= histories.size() - 5) {
+                        System.out.println(" - " + histories.get(i));
+                    }
+                }
+                System.out.println("=".repeat(60));
+                System.out.println("Press 'q' to go back | press 'w/s' to navigate");
 
-    			key = (char) readKey();
-    			if (key == 'w') {
-    				clearScreen();
-    				num -= 1;
-    				if (num < 0) num = 0;
-    			}
-    			else if (key == 's') {
-    				clearScreen();
-    				num += 1;
-    				if (num > histories.size() - 6) num = histories.size() - 5;
-    			}
+                key = (char) readKey();
+                if (key == 'w') {
+                    clearScreen();
+                    num -= 1;
+                    if (num < 0) num = 0;
+                } else if (key == 's') {
+                    clearScreen();
+                    num += 1;
+                    if (num > histories.size() - 6) num = histories.size() - 5;
+                }
             }
             clearScreen();
             if (key == 'q') break;
@@ -96,7 +95,10 @@ public class Main {
                 key = (char) readKey();
                 if (key >= '1' && key <= '3') {
                     break;
-                } else {clearScreen(); System.out.println("Invalid Option!!\n" + "=".repeat(30));}
+                } else {
+                    clearScreen();
+                    System.out.println("Invalid Option!!\n" + "=".repeat(30));
+                }
             }
             switch (key) {
                 case '1' -> bankService.Register(getCurrentTime());
@@ -121,71 +123,70 @@ public class Main {
                                 key = (char) readKey();
                                 if (key >= '0' && key <= '6') {
                                     break;
-                                } else {clearScreen(); System.out.println("Invalid Option!!\n" + "=".repeat(30));}
+                                } else {
+                                    clearScreen();
+                                    System.out.println("Invalid Option!!\n" + "=".repeat(30));
+                                }
                             }
                             switch (key) {
                                 case '0' -> {
                                     clearScreen();
-                                    while (true) {
-                                        System.out.println("Here are your information:");
-                                        System.out.println("=".repeat(30));
-                                        System.out.println("Name: " + current_acc.getName());
-                                        System.out.println("Account Number: " + current_acc.getAccountNumber());
-                                        System.out.println("Balance: " + current_acc.getBalance());
-                                        System.out.println("Password: " + current_acc.getPassword());
-                                        System.out.println("=".repeat(30));
-                                        System.out.println("1 - Change Name");
-                                        System.out.println("2 - Change Password");
-                                        System.out.println("3 - Go back");
-                                        System.out.print("Your Option: ");
-                                        key = (char) readKey();
-                                        switch (key) {
-                                            case '1' -> {
-                                                clearScreen();
-                                                System.out.print("Enter Your New Name (Enter 'q' to Go back): ");
-                                                str = input.nextLine();
-                                                if (str.equals("q") || str.equals("Q")) break;
+                                    System.out.println("Here are your information:");
+                                    System.out.println("=".repeat(30));
+                                    System.out.println("Name: " + current_acc.getName());
+                                    System.out.println("Account Number: " + current_acc.getAccountNumber());
+                                    System.out.println("Balance: " + current_acc.getBalance());
+                                    System.out.println("Password: " + current_acc.getPassword());
+                                    System.out.println("=".repeat(30));
+                                    System.out.println("1 - Change Name");
+                                    System.out.println("2 - Change Password");
+                                    System.out.println("3 - Go back");
+                                    System.out.print("Your Option: ");
+                                    key = (char) readKey();
+                                    switch (key) {
+                                        case '1' -> {
+                                            clearScreen();
+                                            System.out.print("Enter Your New Name (Enter 'q' to Go back): ");
+                                            str = input.nextLine();
+                                            if (str.equals("q") || str.equals("Q")) break;
 
-                                                bankService.changeName(current_acc, str);
+                                            bankService.changeName(current_acc, str);
 
-                                                clearScreen();
-                                                System.out.println("Your new name has been changed!");
-                                                System.out.println("=".repeat(30));
-                                            }
-                                            case '2' -> {
-                                                clearScreen();
-                                                while  (true) {
-                                                    System.out.print("Enter Your Current Password (Enter 'q' to Go back): ");
-                                                    str = input.nextLine();
-                                                    if  (str.equals("q") || str.equals("Q")) break;
-                                                    else if (current_acc.getPassword().equals(str)) break;
-                                                    else {
-                                                        clearScreen();
-                                                        System.out.println("Incorrect Password!!!");
-                                                        System.out.println("=".repeat(30));
-                                                    }
-                                                }
-
-                                                if (str.equals("q") || str.equals("Q")) break;
-
-                                                clearScreen();
-                                                System.out.print("Please Enter yourNew Password (Enter 'q' to Go back): ");
-                                                str = input.nextLine();
-
-                                                if (str.equals("q") || str.equals("Q")) break;
-
-                                                bankService.changePassword(current_acc, str);
-
-                                                clearScreen();
-                                                System.out.println("Your current password has been changed!");
-                                                System.out.println("=".repeat(30));
-                                            }
-                                            case '3' -> {clearScreen();}
-                                            default -> System.out.println("Invalid Option!!\n" + "=".repeat(30));
+                                            clearScreen();
+                                            System.out.println("Your new name has been changed!");
+                                            System.out.println("=".repeat(30));
                                         }
-                                        clearScreen();
-                                        break;
+                                        case '2' -> {
+                                            clearScreen();
+                                            while (true) {
+                                                System.out.print("Enter Your Current Password (Enter 'q' to Go back): ");
+                                                str = input.nextLine();
+                                                if (str.equals("q") || str.equals("Q")) break;
+                                                else if (current_acc.getPassword().equals(str)) break;
+                                                else {
+                                                    clearScreen();
+                                                    System.out.println("Incorrect Password!!!");
+                                                    System.out.println("=".repeat(30));
+                                                }
+                                            }
+
+                                            if (str.equals("q") || str.equals("Q")) break;
+
+                                            clearScreen();
+                                            System.out.print("Please Enter yourNew Password (Enter 'q' to Go back): ");
+                                            str = input.nextLine();
+
+                                            if (str.equals("q") || str.equals("Q")) break;
+
+                                            bankService.changePassword(current_acc, str);
+
+                                            clearScreen();
+                                            System.out.println("Your current password has been changed!");
+                                            System.out.println("=".repeat(30));
+                                        }
+                                        default -> System.out.println("Invalid Option!!\n" + "=".repeat(30));
                                     }
+                                    clearScreen();
                                 }
                                 case '1' -> {
                                     clearScreen();
@@ -194,7 +195,7 @@ public class Main {
                                     System.out.println("=".repeat(30));
                                 }
                                 case '2' -> {
-                                	double amount;
+                                    double amount;
 
                                     clearScreen();
                                     while (true) {
@@ -202,20 +203,28 @@ public class Main {
                                         System.out.println("Your Balance: " + current_acc.getBalance());
                                         System.out.print("Enter Amount to Withdraw (Enter 'q' to Exit): ");
                                         str = input.nextLine();
-                                        if (str.equals("q") || str.equals("Q")) {clearScreen(); break;}
-                                        else if (bankService.longCheck(str) != 0) {
-                                        	amount = bankService.doubleCheck(str);
+                                        if (str.equals("q") || str.equals("Q")) {
+                                            clearScreen();
+                                            break;
+                                        } else if (bankService.doubleCheck(str) != 0) {
+                                            amount = bankService.doubleCheck(str);
                                             if (bankService.Withdraw(current_acc, amount, getCurrentTime())) {
                                                 clearScreen();
                                                 System.out.println("Withdraw Successful!!");
                                                 System.out.println("=".repeat(30));
                                                 break;
-                                            } else {clearScreen(); System.out.println("Invalid Amount!");}
-                                        } else {clearScreen();System.out.println("Invalid Input!");}
+                                            } else {
+                                                clearScreen();
+                                                System.out.println("Invalid Amount!");
+                                            }
+                                        } else {
+                                            clearScreen();
+                                            System.out.println("Invalid Input!");
+                                        }
                                     }
                                 }
                                 case '3' -> {
-                                	double amount;
+                                    double amount;
 
                                     clearScreen();
                                     while (true) {
@@ -223,17 +232,24 @@ public class Main {
                                         System.out.println("Your Balance: " + current_acc.getBalance());
                                         System.out.print("Enter Amount to Deposit (Enter 'q' to Exit): ");
                                         str = input.nextLine();
-                                        if (str.equals("q") || str.equals("Q")) {clearScreen(); break;}
-                                        else if (bankService.longCheck(str) != 0) {
+                                        if (str.equals("q") || str.equals("Q")) {
+                                            clearScreen();
+                                            break;
+                                        } else if (bankService.doubleCheck(str) != 0) {
                                             amount = bankService.doubleCheck(str);
                                             if (bankService.Deposit(current_acc, amount, getCurrentTime())) {
                                                 clearScreen();
                                                 System.out.println("Deposit Successful!!");
                                                 System.out.println("=".repeat(30));
                                                 break;
-                                            } else {clearScreen(); System.out.println("Invalid Amount!");}
+                                            } else {
+                                                clearScreen();
+                                                System.out.println("Invalid Amount!");
+                                            }
+                                        } else {
+                                            clearScreen();
+                                            System.out.println("Invalid Input!!");
                                         }
-                                        else {clearScreen(); System.out.println("Invalid Input!!");}
                                     }
                                 }
                                 case '4' -> {
